@@ -1,0 +1,1076 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Chirag's Thinking Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Figtree:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a beige desk planner. Cream cards with hairline borders on a stone ground; brown ink; one brown accent for actions and signals. */
+:root{
+  --paper:#ECE3D6; --sheet:#FAF6EF; --well:#F1E9DD; --ink:#2E2219; --muted:#76624F; --rule:#DDCFBC;
+  --pen:#7A4A28; --pen-soft:#EEDFCC; --due:#9E5F17; --due-soft:#F4E3C8; --good:#4C7752; --good-soft:#E1EAD9; --bad:#A3412F;
+  --shadow:0 1px 0 rgba(70,45,20,.05);
+  --f-display:"Lora",Georgia,"Times New Roman",serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#1B1511; --sheet:#241C16; --well:#2D241C; --ink:#F0E6D8; --muted:#B4A28D; --rule:#3B3026;
+  --pen:#D7A578; --pen-soft:#3A2B1F; --due:#E3AE62; --due-soft:#3A2C18; --good:#9DC39F; --good-soft:#233125; --bad:#E8897B;
+  --shadow:0 1px 0 rgba(0,0,0,.3); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#1B1511; --sheet:#241C16; --well:#2D241C; --ink:#F0E6D8; --muted:#B4A28D; --rule:#3B3026;
+  --pen:#D7A578; --pen-soft:#3A2B1F; --due:#E3AE62; --due-soft:#3A2C18; --good:#9DC39F; --good-soft:#233125; --bad:#E8897B;
+  --shadow:0 1px 0 rgba(0,0,0,.3); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:16px/1.6 var(--f-body);
+  background-image:radial-gradient(ellipse at 50% -10%,var(--sheet),transparent 60%);background-attachment:fixed}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:18px 90px}
+header.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font:600 1.7rem/1.15 var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1 em{font-style:normal;color:var(--pen)}
+.stamp{font:400 .78rem var(--f-mono);color:var(--muted)}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:4px;margin:16px -16px 0;padding:10px 16px;
+  background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--rule)}
+nav.tabs button{flex:1 0 auto;border:0;background:none;color:var(--muted);font:600 .92rem var(--f-body);padding:8px 14px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
+nav.tabs button:hover{color:var(--ink)}
+nav.tabs button[aria-selected="true"]{background:var(--pen);color:var(--sheet)}
+nav.tabs .badge{display:inline-block;min-width:1.4em;margin-left:5px;padding:0 6px;border-radius:999px;background:var(--due);color:var(--sheet);font:500 .7rem var(--f-mono)}
+section.view{display:flex;flex-direction:column;gap:18px;padding-top:16px}
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:16px;min-width:0;box-shadow:var(--shadow)}
+h2{font:600 1.25rem/1.25 var(--f-display);margin:0}
+h3{font:700 .74rem var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--pen);margin:0}
+.hint{color:var(--muted);font-size:.9rem;margin:0}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.93rem}
+label.f small{font-weight:400;color:var(--muted)}
+input[type=text],input[type=date],input[type=search],textarea,select{width:100%;font:16px/1.5 var(--f-body);color:var(--ink);background:var(--well);
+  border:1px solid var(--rule);border-radius:10px;padding:10px 13px;transition:border-color .15s,background .15s}
+input:focus,textarea:focus,select:focus{border-color:var(--pen);background:var(--sheet);outline:none}
+textarea{min-height:84px;resize:vertical}
+button:focus-visible{outline:2px solid var(--pen);outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row>*{min-width:0}
+.btn{border:0;background:var(--well);color:var(--ink);font:700 .92rem var(--f-body);padding:10px 16px;border-radius:999px;cursor:pointer;transition:transform .1s,filter .15s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--pen);color:var(--sheet)}
+.btn.ghost{background:none;color:var(--pen);padding-inline:8px}
+.btn.danger{color:var(--bad)}
+.btn:disabled{opacity:.45;cursor:default}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{border:0;background:var(--well);color:var(--ink);border-radius:999px;padding:6px 13px;font:700 .85rem var(--f-body);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--pen);color:var(--sheet)}
+.datenav{display:flex;align-items:center;gap:4px}
+.datenav .d{font:700 1rem var(--f-body)}
+.status{font:400 .8rem var(--f-mono);color:var(--muted)}
+.list{display:flex;flex-direction:column}
+.item{display:flex;gap:12px;align-items:flex-start;padding:13px 4px;border:0;border-top:1px solid var(--rule);cursor:pointer;background:none;text-align:left;color:inherit;font:inherit;width:100%;border-radius:0}
+.item:first-child{border-top:0}
+.item .body{flex:1;min-width:0}
+.item .t{font:700 1.02rem/1.35 var(--f-body);overflow-wrap:anywhere}
+.item .m{font:400 .78rem var(--f-mono);color:var(--muted);margin-top:3px}
+.p{flex:0 0 auto;font:500 .82rem var(--f-mono);padding:4px 9px;border-radius:999px;background:var(--pen-soft);color:var(--pen)}
+.pill{display:inline-block;flex:0 0 auto;font:800 .66rem var(--f-body);text-transform:uppercase;letter-spacing:.06em;padding:3px 9px;border-radius:999px;background:var(--well);color:var(--muted)}
+.pill.due{background:var(--due-soft);color:var(--due)}
+.pill.good{background:var(--good-soft);color:var(--good)} .pill.bad{color:var(--bad)}
+.empty{background:var(--well);border-radius:16px;padding:18px;color:var(--muted);font-size:.93rem}
+.empty b{color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{padding:12px;border-radius:16px;background:var(--well)}
+.stat .n{font:500 1.35rem var(--f-mono);font-variant-numeric:tabular-nums}
+.stat .l{font-size:.78rem;color:var(--muted)}
+.claude-note{background:var(--pen-soft);border-radius:16px;padding:14px;white-space:pre-wrap}
+.persp{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:16px;background:var(--well)}
+.persp input,.persp textarea,.persp select{background:var(--sheet)}
+.persp .row select{width:auto}
+.hist{font:400 .8rem/1.7 var(--f-mono);color:var(--muted)}
+.slider{display:flex;gap:10px;align-items:center}
+.slider input{flex:1;accent-color:var(--pen)}
+.slider output{font:500 .95rem var(--f-mono);min-width:3.2em;text-align:right}
+/* hobbies */
+.hobby{display:flex;flex-direction:column;gap:12px;background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:18px;box-shadow:var(--shadow);min-width:0}
+.hobby .head{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.hobby .name{font:600 1.2rem/1.25 var(--f-display);background:none;border:0;color:inherit;padding:0;cursor:pointer;text-align:left;overflow-wrap:anywhere}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.92rem}
+.kv dt{font:800 .7rem var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-top:3px}
+.kv dd{margin:0;overflow-wrap:anywhere}
+.nextup{background:var(--due-soft);border-radius:14px;padding:10px 13px;font-size:.93rem}
+.nextup b{font:800 .7rem var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--due);display:block;margin-bottom:2px}
+.sess{display:flex;flex-direction:column;gap:2px;padding:10px 4px;border:0;border-top:1px solid var(--rule);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;width:100%}
+.sess:first-child{border-top:0}
+.sess .m{font:400 .78rem var(--f-mono);color:var(--muted)}
+.sess .w{overflow-wrap:anywhere}
+/* planning */
+.greet{font:500 1.4rem/1.3 var(--f-display);margin:0;text-wrap:balance}
+.seg{display:flex;gap:4px;background:var(--sheet);border:1px solid var(--rule);border-radius:999px;padding:4px;align-self:flex-start;max-width:100%;overflow-x:auto}
+.seg button{border:0;background:none;color:var(--muted);font:700 .88rem var(--f-body);padding:7px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--pen-soft);color:var(--pen)}
+.task{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-top:1px solid var(--rule)}
+.task:first-child{border-top:0}
+.tick{flex:0 0 24px;height:24px;margin-top:2px;border-radius:50%;border:2px solid var(--muted);background:none;cursor:pointer;display:grid;place-items:center;padding:0;transition:all .2s}
+.tick[aria-pressed="true"]{background:var(--good);border-color:var(--good)}
+.tick[aria-pressed="true"]::after{content:"";width:8px;height:4px;border-left:2.5px solid var(--sheet);border-bottom:2.5px solid var(--sheet);transform:rotate(-45deg) translate(1px,-1px)}
+.tbody{flex:1;min-width:0;border:0;background:none;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer;display:flex;flex-direction:column;gap:1px}
+.tbody .tt{font-weight:700;overflow-wrap:anywhere}
+.task.done .tt{text-decoration:line-through;color:var(--muted)}
+.tbody .m{font:400 .76rem var(--f-mono);color:var(--muted)}
+.star{color:var(--due)}
+.d-over{color:var(--bad)} .d-today{color:var(--due);font-weight:500}
+.qadd{display:flex;gap:8px;flex-wrap:wrap}
+.qadd input[type=text]{flex:1 1 180px}
+.qadd input[type=date]{flex:0 1 160px}
+.card{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:12px;background:var(--well);border:1px solid var(--rule);color:inherit;font:inherit;text-align:left;cursor:pointer;width:100%;min-width:0}
+.card:hover{border-color:var(--muted)}
+.card .t{font:600 1.05rem/1.3 var(--f-display);overflow-wrap:anywhere}
+.card .m{font:400 .78rem var(--f-mono);color:var(--muted)}
+.card .nx{font-size:.92rem;overflow-wrap:anywhere}
+.card .nx b{font:800 .66rem var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--pen);margin-right:6px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.bar{height:6px;border-radius:9px;background:var(--rule);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--good);border-radius:9px}
+.agenda{display:flex;flex-direction:column}
+.ag{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-top:1px solid var(--rule);border-left:0;border-right:0;border-bottom:0;background:none;color:inherit;font:inherit;text-align:left;width:100%;cursor:pointer}
+.ag:first-child{border-top:0}
+.ag .when{flex:0 0 4.6em;font:500 .8rem var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.ag .what{flex:1;min-width:0;overflow-wrap:anywhere}
+.ag .what small{display:block;font:400 .76rem var(--f-mono);color:var(--muted)}
+.kind{display:inline-block;font:800 .62rem var(--f-body);text-transform:uppercase;letter-spacing:.07em;padding:1px 7px;border-radius:999px;margin-right:6px;vertical-align:1px;background:var(--pen-soft);color:var(--pen)}
+.kind.exam,.kind.deadline{background:var(--due-soft);color:var(--due)}
+.kind.task{background:var(--good-soft);color:var(--good)}
+.kind.gcal{background:var(--well);color:var(--muted);border:1px solid var(--rule)}
+a.ag{text-decoration:none}
+a.ag .what::after{content:" ↗";color:var(--muted);font-size:.8em}
+.day{display:flex;flex-direction:column;gap:6px}
+.day h3{display:flex;justify-content:space-between}
+.day.is-today h3{color:var(--pen)}
+.mini{font-size:.9rem;color:var(--muted)}
+input[type=time]{font:16px var(--f-body);color:var(--ink);background:var(--well);border:1.5px solid transparent;border-radius:14px;padding:9px 12px;width:100%}
+input[type=number]{width:6.5em;font:16px var(--f-body);color:var(--ink);background:var(--well);border:1.5px solid transparent;border-radius:14px;padding:9px 12px}
+/* editor sheet */
+.scrim{position:fixed;inset:0;background:rgba(60,35,25,.35);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.editor{background:var(--sheet);width:100%;max-width:720px;max-height:92%;overflow:auto;border-radius:26px 26px 0 0;
+  padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow)}
+.editor .bar{display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;top:-20px;background:var(--sheet);padding:6px 0;z-index:1}
+.grab{width:42px;height:5px;border-radius:9px;background:var(--rule);margin:-6px auto 0}
+.confirm{display:flex;gap:8px;align-items:center;font-size:.9rem;color:var(--bad);flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--sheet);
+  padding:9px 16px;border-radius:999px;font:700 .86rem var(--f-body);z-index:30;box-shadow:var(--shadow)}
+.banner{background:var(--due-soft);color:var(--due);padding:12px 14px;border-radius:16px;font-size:.9rem}
+/* ---- layout & navigation pass ---- */
+header.top{align-items:flex-end}
+.titles{display:flex;flex-direction:column;gap:2px;min-width:0}
+.brand{font:700 .72rem var(--f-body);text-transform:uppercase;letter-spacing:.14em;color:var(--pen)}
+h1{font-size:1.9rem}
+nav.tabs{gap:2px}
+nav.tabs button{display:inline-flex;align-items:center;gap:7px;position:relative}
+nav.tabs svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+nav.tabs .badge{margin-left:2px}
+section.view{gap:14px;padding-top:18px}
+.sheet{padding:20px;gap:14px}
+.shead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:-2px}
+.shead h2{font-size:1.15rem}
+.shead .btn.ghost{padding-block:4px;font-size:.88rem}
+.greet{font-size:1.25rem;color:var(--muted);padding-inline:2px}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 12px 10px;border-radius:12px;background:var(--sheet);border:1px solid var(--rule);color:var(--ink);font:inherit;cursor:pointer;text-align:left;min-width:0}
+.tile:hover{border-color:var(--muted)}
+.tile .n{font:600 1.5rem/1.1 var(--f-display);font-variant-numeric:tabular-nums;color:var(--pen)}
+.tile .l{font-size:.78rem;color:var(--muted);line-height:1.25}
+.ag{min-height:44px;padding:11px 0;align-items:baseline}
+.ag .when{flex-basis:5.2em}
+.ag .what{font-size:.98rem;line-height:1.45}
+.task{padding:11px 0;min-height:44px}
+.hint{line-height:1.5}
+section.view[id$="seg"]{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:4;padding-top:12px;padding-bottom:4px;background:linear-gradient(var(--paper) 75%,transparent)}
+.day{padding-block:4px}
+.day + .day{border-top:1px solid var(--rule);padding-top:14px}
+.day h3{font-size:.8rem}
+@media (max-width:560px){.summary{grid-template-columns:repeat(2,1fr)}}
+/* phones: bottom tab bar, thumb-reachable */
+@media (max-width:720px){
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;top:auto;margin:0;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));
+    background:var(--sheet);border-bottom:0;border-top:1px solid var(--rule);justify-content:space-around;z-index:15;backdrop-filter:none;overflow:visible}
+  nav.tabs button{flex:1 1 0;flex-direction:column;gap:3px;padding:6px 2px;font-size:.68rem;font-weight:600;border-radius:12px;min-width:0}
+  nav.tabs button[aria-selected="true"]{background:var(--pen-soft);color:var(--pen)}
+  nav.tabs .badge{position:absolute;top:2px;left:calc(50% + 6px);margin:0}
+  .wrap{padding-block:16px calc(96px + env(safe-area-inset-bottom,0px))}
+  section.view[id$="seg"]{top:env(safe-area-inset-top,0px)}
+  .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  h1{font-size:1.65rem}
+}
+@media (prefers-reduced-motion: no-preference){.editor{animation:up .22s ease-out}@keyframes up{from{transform:translateY(30px);opacity:.5}}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="titles"><span class="brand">Thinking Ledger</span><h1 id="pageTitle">Home</h1></div>
+    <span class="stamp" id="stamp"></span>
+  </header>
+  <div class="banner" id="offline" hidden>Saving is unavailable in this view. Open the artifact signed in to your claude.ai account to write entries.</div>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="home" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></button>
+    <button role="tab" data-tab="work" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg><span>Work</span></button>
+    <button role="tab" data-tab="week" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Week</span></button>
+    <button role="tab" data-tab="today" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg><span>Journal</span></button>
+    <button role="tab" data-tab="hobbies" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg><span>Hobbies</span></button>
+    <button role="tab" data-tab="think" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><span>Think</span><span class="badge" id="dueBadge" hidden></span></button>
+  </nav>
+
+  <!-- HOME -->
+  <section class="view" id="v-home">
+    <p class="greet" id="greet"></p>
+    <div class="summary" id="homeSummary"></div>
+    <div class="sheet" id="sec-sched">
+      <div class="shead"><h2>Today's schedule</h2><button class="btn ghost" data-goto="week">Week →</button></div>
+      <div class="agenda" id="homeSched"></div>
+    </div>
+    <div class="sheet" id="sec-todo">
+      <div class="shead"><h2>To do today</h2><span class="status" id="homeTodoCount"></span></div>
+      <div id="homeTodo"></div>
+      <form class="qadd" id="homeAdd"><input type="text" id="homeAddT" placeholder="Add a task for today"><button class="btn primary" type="submit">Add</button></form>
+    </div>
+    <div class="sheet" id="sec-up">
+      <div class="shead"><h2>Coming up</h2><span class="status">next 14 days</span></div>
+      <div class="agenda" id="homeUpcoming"></div>
+    </div>
+    <div class="sheet">
+      <div class="shead"><h2>Active projects</h2><button class="btn ghost" data-goto="work:projects">All →</button></div>
+      <div class="cards" id="homeProjects"></div>
+    </div>
+    <div class="sheet">
+      <div class="shead"><h2>Courses</h2><button class="btn ghost" data-goto="work:studies">All →</button></div>
+      <div class="cards" id="homeCourses"></div>
+    </div>
+    <div class="sheet" id="homeAlsoBox">
+      <div class="shead"><h2>Waiting on you</h2></div>
+      <div class="agenda" id="homeAlso"></div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="view" id="v-workseg" hidden>
+    <div class="seg" id="workSeg"><button data-s="projects">Projects</button><button data-s="studies">Studies</button></div>
+  </section>
+  <section class="view" id="v-projects" hidden>
+    <div class="sheet">
+      <div class="row" style="justify-content:space-between"><h2>Inbox</h2><span class="status">tasks not filed under a project or course</span></div>
+      <div id="inboxList"></div>
+      <form class="qadd" id="inboxAdd"><input type="text" id="inboxAddT" placeholder="Capture a task"><input type="date" id="inboxAddD" aria-label="Due date"><button class="btn primary" type="submit">Add</button></form>
+    </div>
+    <div class="sheet">
+      <div class="row" style="justify-content:space-between"><h2>Projects</h2><button class="btn primary" id="newProject">New project</button></div>
+      <div class="chips" id="projFilter"></div>
+      <div class="cards" id="projList"></div>
+    </div>
+  </section>
+  <section class="view" id="v-studies" hidden>
+    <div class="sheet">
+      <div class="row" style="justify-content:space-between"><h2>Courses</h2><button class="btn primary" id="newCourse">New course</button></div>
+      <p class="hint">For each course: what you're studying now, upcoming assignments and exams, and course tasks.</p>
+      <div class="cards" id="courseList"></div>
+    </div>
+    <div class="sheet">
+      <div class="row" style="justify-content:space-between"><h3>All assignments &amp; exams</h3><button class="btn" id="newAssess">Add one</button></div>
+      <div class="agenda" id="assessList"></div>
+    </div>
+  </section>
+
+  <!-- WEEK -->
+  <section class="view" id="v-week" hidden>
+    <div class="sheet">
+      <div class="row" style="justify-content:space-between">
+        <div class="datenav"><button class="btn ghost" id="kPrev" aria-label="Previous week">←</button><span class="d" id="kTitle"></span><button class="btn ghost" id="kNext" aria-label="Next week">→</button></div>
+        <button class="btn primary" id="newEvent">Add to schedule</button>
+      </div>
+      <p class="hint">Classes and regular slots repeat weekly. Deadlines from tasks, assignments, exams, projects and Google Classroom appear on their day.</p>
+      <div class="row" id="gcalBar" style="justify-content:space-between"></div>
+    </div>
+    <div class="sheet" id="weekDays"></div>
+  </section>
+
+  <!-- THINK -->
+  <section class="view" id="v-thinkseg" hidden>
+    <div class="seg" id="thinkSeg"><button data-s="ideas">Ideas</button><button data-s="decisions">Decisions</button><button data-s="review">Weekly review</button></div>
+  </section>
+
+  <!-- TODAY -->
+  <section class="view" id="v-today" hidden>
+    <div class="sheet" id="claudeNoteBox" hidden>
+      <h3>From this week's review</h3>
+      <div class="claude-note" id="claudeNoteToday"></div>
+    </div>
+    <div class="sheet">
+      <div class="row" style="justify-content:space-between">
+        <div class="datenav">
+          <button class="btn ghost" id="dPrev" aria-label="Previous day">←</button>
+          <span class="d" id="dLabel"></span>
+          <button class="btn ghost" id="dNext" aria-label="Next day">→</button>
+        </div>
+        <span class="status" id="eStatus"></span>
+      </div>
+      <div class="row" style="justify-content:space-between"><h3>Hobby time</h3><button class="btn" id="todayLog">Log a session</button></div>
+      <div class="list" id="todaySessions"></div>
+    </div>
+    <div class="sheet">
+      <label class="f">One thing that matters today<small>Set in the morning. A single intention, not a to-do list.</small>
+        <input type="text" id="e-focus" placeholder="e.g. Finish the proof of the inverse function theorem">
+      </label>
+      <label class="f">What happened<small>Facts first. What did you do, read, argue about?</small>
+        <textarea id="e-log"></textarea>
+      </label>
+      <label class="f">What I noticed or learned<small>A changed view, a surprise, a mistake worth keeping.</small>
+        <textarea id="e-learned"></textarea>
+      </label>
+      <label class="f">Open question<small>Something you can't yet answer. Send it to Ideas to work on it.</small>
+        <input type="text" id="e-question">
+      </label>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <span style="font-weight:700;font-size:.93rem">Energy</span>
+        <div class="chips" id="e-energy"></div>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="eSave">Save entry</button>
+        <button class="btn" id="ePromote">Send question to Ideas</button>
+      </div>
+    </div>
+    <div class="sheet">
+      <h3>Decisions due for review</h3>
+      <div class="list" id="dueList"></div>
+    </div>
+  </section>
+
+  <!-- HOBBIES -->
+  <section class="view" id="v-hobbies" hidden>
+    <div class="sheet">
+      <div class="row" style="justify-content:space-between">
+        <h2>Hobbies</h2>
+        <button class="btn primary" id="newHobby">New hobby</button>
+      </div>
+      <p class="hint">Log each session briefly: how long, what you worked on, and what to try next time. The next session opens with that note.</p>
+    </div>
+    <div id="hobbyList" style="display:flex;flex-direction:column;gap:18px"></div>
+  </section>
+
+  <!-- IDEAS -->
+  <section class="view" id="v-ideas" hidden>
+    <div class="sheet">
+      <div class="row" style="justify-content:space-between">
+        <h2>Idea ledger</h2>
+        <button class="btn primary" id="newIdea">New idea</button>
+      </div>
+      <p class="hint">One claim or question per card. Give it a confidence, the views for and against it, and what would change your mind.</p>
+      <input type="search" id="ideaSearch" placeholder="Search ideas and tags">
+      <div class="chips" id="ideaFilter"></div>
+      <div class="list" id="ideaList"></div>
+    </div>
+  </section>
+
+  <!-- DECISIONS -->
+  <section class="view" id="v-decisions" hidden>
+    <div class="sheet">
+      <div class="row" style="justify-content:space-between">
+        <h2>Decision journal</h2>
+        <button class="btn primary" id="newDec">New decision</button>
+      </div>
+      <p class="hint">Write the reasoning before you know the outcome. Review on the date you set, then judge the reasoning separately from the luck.</p>
+      <div class="stats" id="calib"></div>
+      <div class="list" id="decList"></div>
+    </div>
+  </section>
+
+  <!-- REVIEW -->
+  <section class="view" id="v-review" hidden>
+    <div class="sheet">
+      <div class="row" style="justify-content:space-between">
+        <h2 id="wkTitle">Week</h2>
+        <div class="datenav">
+          <button class="btn ghost" id="wPrev" aria-label="Previous week">←</button>
+          <button class="btn ghost" id="wNext" aria-label="Next week">→</button>
+        </div>
+      </div>
+      <div class="stats" id="wkStats"></div>
+      <label class="f">What moved forward<textarea id="w-wins"></textarea></label>
+      <label class="f">Where I got stuck, and why<textarea id="w-stuck"></textarea></label>
+      <label class="f">A pattern I see across the week<textarea id="w-pattern"></textarea></label>
+      <label class="f">Focus for next week<input type="text" id="w-next"></label>
+      <div class="row"><button class="btn primary" id="wSave">Save review</button><span class="status" id="wStatus"></span></div>
+    </div>
+    <div class="sheet">
+      <h3>Claude's notes on this week</h3>
+      <div class="claude-note" id="claudeWeek"></div>
+    </div>
+  </section>
+</div>
+
+<div id="editorRoot"></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const ymd=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const parse=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return ymd(d)};
+const todayStr=()=>ymd(new Date());
+function isoWeek(s){const d=parse(s);const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-day);
+  const y0=new Date(Date.UTC(t.getUTCFullYear(),0,1));const w=Math.ceil(((t-y0)/864e5+1)/7);return t.getUTCFullYear()+"-W"+pad(w)}
+function weekMonday(s){const d=parse(s);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return ymd(d)}
+const fmtDay=s=>parse(s).toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
+const clone=o=>JSON.parse(JSON.stringify(o||{}));
+function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,1800)}
+
+const S={db:null,entries:{},hobbies:[],sessions:[],ideas:[],decisions:[],reviews:{},day:todayStr(),weekStart:weekMonday(todayStr()),ideaFilter:"active",ideaQ:""};
+$("#stamp").textContent=isoWeek(S.day)+" · "+S.day;
+Object.assign(S,{projects:[],tasks:[],courses:[],assess:[],events:[],workSeg:"projects",thinkSeg:"ideas",kStart:weekMonday(todayStr()),projFilter:"active",sheetRefresh:null});
+const TABS=["home","work","week","today","hobbies","think"];
+const ALLV=["home","workseg","projects","studies","week","today","hobbies","thinkseg","ideas","decisions","review"];
+function store(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function recall(k){try{return localStorage.getItem(k)}catch(e){return null}}
+
+/* ---------- tabs ---------- */
+const tabs=[...document.querySelectorAll("nav.tabs button")];
+let curTab="home";
+const TITLES={home:"Home",work:"Work",week:"Week",today:"Journal",hobbies:"Hobbies",think:"Think"};
+function show(tab){if(curTab!==tab)window.scrollTo(0,0);curTab=tab;tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
+  $("#pageTitle").textContent=TITLES[tab]||"";
+  const vis=tab==="work"?["workseg",S.workSeg]:tab==="think"?["thinkseg",S.thinkSeg]:[tab];
+  ALLV.forEach(v=>$("#v-"+v).hidden=!vis.includes(v));
+  $("#workSeg").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.s===S.workSeg));
+  $("#thinkSeg").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.s===S.thinkSeg));
+  store("tl-tab",tab)}
+tabs.forEach(b=>b.onclick=()=>show(b.dataset.tab));
+$("#workSeg").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.workSeg=b.dataset.s;store("tl-work",S.workSeg);show("work")});
+$("#thinkSeg").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.thinkSeg=b.dataset.s;store("tl-think",S.thinkSeg);show("think")});
+document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>{const [t,s]=b.dataset.goto.split(":");if(t==="work")S.workSeg=s;if(t==="think")S.thinkSeg=s;show(t)});
+{const w=recall("tl-work"),k=recall("tl-think");if(["projects","studies"].includes(w))S.workSeg=w;if(["ideas","decisions","review"].includes(k))S.thinkSeg=k;
+ let st=(location.hash||"").slice(1)||recall("tl-tab");show(TABS.includes(st)?st:"home")}
+
+/* ---------- planning helpers ---------- */
+const dow=s=>((parse(s).getDay()+6)%7)+1;
+const daysTo=s=>Math.round((parse(s)-parse(todayStr()))/864e5);
+const projName=id=>(S.projects.find(p=>p.id===id)||{}).name;
+const courseName=id=>{const c=S.courses.find(c=>c.id===id);return c?(c.code||c.name):undefined};
+function dueText(d){if(!d)return "";const n=daysTo(d);
+  if(n<0)return `<span class="d-over">overdue · ${esc(fmtDay(d))}</span>`;if(n===0)return `<span class="d-today">due today</span>`;
+  if(n===1)return `<span class="d-today">due tomorrow</span>`;return "due "+esc(fmtDay(d))}
+function ctxOf(t){return t.projectId?projName(t.projectId):t.courseId?courseName(t.courseId):"Inbox"}
+const openTasks=()=>S.tasks.filter(t=>!t.done);
+function sortTasks(xs){return xs.slice().sort((a,b)=>(a.done-b.done)||((a.due||"9999")<(b.due||"9999")?-1:(a.due||"9999")>(b.due||"9999")?1:0)||((b.star?1:0)-(a.star?1:0))||(a.created||"").localeCompare(b.created||""))}
+function taskRow(t,showCtx){const m=[showCtx!==false?esc(ctxOf(t)||""):"",dueText(t.due)].filter(Boolean).join(" · ");
+  return `<div class="task ${t.done?"done":""}"><button class="tick" data-tick="${esc(t.id)}" aria-pressed="${!!t.done}" aria-label="${t.done?"Mark not done":"Mark done"}"></button>
+  <button class="tbody" data-task="${esc(t.id)}"><span class="tt">${t.star?'<span class="star" aria-label="for today">★ </span>':""}${esc(t.title)}</span>${m?`<span class="m">${m}</span>`:""}</button></div>`}
+function taskList(xs,showCtx,emptyMsg){return xs.length?xs.map(t=>taskRow(t,showCtx)).join(""):`<p class="hint">${emptyMsg}</p>`}
+function wireTasks(root,back){root.querySelectorAll("[data-tick]").forEach(b=>b.onclick=()=>toggleTask(b.dataset.tick));
+  root.querySelectorAll("[data-task]").forEach(b=>b.onclick=()=>openTask(S.tasks.find(t=>t.id===b.dataset.task),null,back))}
+async function toggleTask(id){if(!S.db)return;const t=S.tasks.find(x=>x.id===id);if(!t)return;const done=!t.done;
+  t.done=done;renderPlanning();
+  try{await S.db.doc("tasks/"+id).update({done,doneAt:done?todayStr():null,star:done?false:!!t.star,updated:new Date().toISOString()})}catch(e){toast("Couldn't save. Try again")}}
+async function addTask(fields){if(!S.db)return false;const now=new Date().toISOString();
+  const body=Object.assign({title:"",notes:"",due:null,star:false,done:false,doneAt:null,projectId:null,courseId:null,created:now,updated:now},fields);
+  if(!body.title)return false;
+  try{await S.db.collection("tasks").doc().set(body);return true}catch(e){toast(e.code==="quota_exceeded"?"Storage is full: delete old tasks":"Couldn't save. Try again");return false}}
+function wireQuick(formId,textId,dateId,extra){$("#"+formId).addEventListener("submit",async e=>{e.preventDefault();const t=$("#"+textId).value.trim();if(!t)return;
+  const due=dateId?($("#"+dateId).value||null):null;if(await addTask(Object.assign({title:t,due},typeof extra==="function"?extra():extra||{}))){$("#"+textId).value="";if(dateId)$("#"+dateId).value=""}})}
+function eventsOn(d){return S.events.filter(e=>e.repeat==="weekly"?(e.days||[]).includes(dow(d))&&(!e.from||d>=e.from)&&(!e.until||d<=e.until):e.date===d)
+  .sort((a,b)=>(a.start||"99").localeCompare(b.start||"99"))}
+function deadlinesOn(d){const out=[];
+  S.assess.filter(a=>a.due===d&&a.status!=="graded").forEach(a=>out.push({kind:a.kind==="exam"||a.kind==="quiz"?"exam":"deadline",label:a.kind||"due",title:a.title,ctx:courseName(a.courseId),open:()=>openAssess(a)}));
+  S.projects.filter(p=>p.deadline===d&&p.status==="active").forEach(p=>out.push({kind:"deadline",label:"project",title:p.name,ctx:"deadline",open:()=>openProject(p)}));
+  openTasks().filter(t=>t.due===d).forEach(t=>out.push({kind:"task",label:"task",title:t.title,ctx:ctxOf(t),open:()=>openTask(t)}));
+  return out}
+function agRow(when,html,i){return `<button class="ag" data-ag="${i}"><span class="when">${when}</span><span class="what">${html}</span></button>`}
+function evHtml(e){const ctx=[e.location,courseName(e.courseId)].filter(Boolean).join(" · ");return `<span class="kind">${esc(e.kind||"event")}</span>${esc(e.title)}${ctx?`<small>${esc(ctx)}</small>`:""}`}
+function wireAg(root,fns){root.querySelectorAll("[data-ag]").forEach(b=>b.onclick=()=>fns[+b.dataset.ag]())}
+
+/* ---------- HOME ---------- */
+function renderHome(){const t=todayStr();const h=new Date().getHours();
+  $("#greet").textContent=(h<12?"Good morning":h<17?"Good afternoon":"Good evening")+", Chirag. "+parse(t).toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"})+".";
+  {const fns=[];const items=dayItems(t);
+  $("#homeSched").innerHTML=items.length?rowsHtml(items,fns):`<p class="hint">Nothing scheduled. Add classes and regular slots in the Week tab.</p>`;
+  wireAg($("#homeSched"),fns)}
+  const todo=sortTasks(openTasks().filter(x=>x.star||(x.due&&x.due<=t)));
+  const doneToday=S.tasks.filter(x=>x.done&&x.doneAt===t);
+  $("#homeTodo").innerHTML=taskList(todo.concat(doneToday),true,"Nothing for today yet. Star a task or give it today's date to see it here.");
+  $("#homeTodoCount").textContent=todo.length||doneToday.length?`${doneToday.length} of ${todo.length+doneToday.length} done`:"";
+  wireTasks($("#homeTodo"));
+  const e=S.entries[t];const wrote=!!(e&&(e.log||e.learned));
+  // upcoming
+  const up=[];let week=0;for(let i=0;i<=14;i++){const d=addDays(t,i);dueItems(d).filter(x=>i>0||x.href).forEach(x=>{if(i<=7)week++;up.push(Object.assign({},x,{t:parse(d).toLocaleDateString(undefined,{day:"numeric",month:"short"})}))})}
+  const tiles=[["sec-sched",dayItems(t).length,"on today"],["sec-todo",todo.length,"to do"],["sec-up",week,"due this week"],["journal",wrote?"✓":"—",wrote?"journal done":"journal"]];
+  $("#homeSummary").innerHTML=tiles.map(([id,n,l])=>`<button class="tile" data-jump="${id}"><span class="n">${n}</span><span class="l">${l}</span></button>`).join("");
+  $("#homeSummary").querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{const id=b.dataset.jump;if(id==="journal"){S.day=todayStr();loadDay();show("today");return}
+    const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})});
+  const ufns=[];$("#homeUpcoming").innerHTML=up.length?rowsHtml(up,ufns):`<p class="hint">No deadlines in the next two weeks.</p>`;wireAg($("#homeUpcoming"),ufns);
+  // projects
+  const ap=S.projects.filter(p=>p.status==="active");
+  $("#homeProjects").innerHTML=ap.length?ap.map(projCard).join(""):`<div class="empty"><b>No active projects.</b> Add the Integration Bee, the Lean stall or your dry-lab app in Work → Projects.</div>`;
+  wireProjCards($("#homeProjects"));
+  const cc=S.courses.filter(c=>c.status!=="done");
+  $("#homeCourses").innerHTML=cc.length?cc.map(courseCard).join(""):`<div class="empty"><b>No courses yet.</b> Add this semester's courses in Work → Studies.</div>`;
+  wireCourseCards($("#homeCourses"));
+  // also
+  const afns=[];let also="";
+  const dd=S.decisions.filter(d=>d.status!=="reviewed"&&d.reviewOn&&d.reviewOn<=t);
+  dd.forEach(d=>{afns.push(()=>openDecision(d,true));also+=agRow("review",`${esc(d.title)}<small>decision due for review</small>`,afns.length-1)});
+  activeHobbies().forEach(hb=>{const last=S.sessions.find(s=>s.hobbyId===hb.id);if(last&&last.next){afns.push(()=>openSession(null,{hobbyId:hb.id,date:t}));
+    also+=agRow("hobby",`${esc(hb.name)}: ${esc(last.next)}<small>next time, from ${esc(fmtDay(last.date))}</small>`,afns.length-1)}});
+  const wait=(when,html,fn)=>{afns.push(fn);also+=agRow(when,html,afns.length-1)};
+  if(h>=18&&!wrote)wait("journal",`Today's entry isn't written yet<small>intention, what happened, what you learned</small>`,()=>{S.day=t;loadDay();show("today")});
+  if(dow(t)===7||dow(t)===1){const ws=dow(t)===7?weekMonday(t):addDays(weekMonday(t),-7);const wk=isoWeek(ws);const r=S.reviews[wk]||{};
+    if(!["wins","stuck","pattern","next"].some(k=>r[k]))wait("review",`Weekly review for ${esc(wk)}${r.claudeNotes?"<small>Claude's notes are in; add your own</small>":"<small>not started</small>"}`,()=>{S.weekStart=ws;loadWeek(true);S.thinkSeg="review";show("think")})}
+  S.projects.filter(p=>p.status==="active"&&!S.tasks.some(x=>x.projectId===p.id&&!x.done)).forEach(p=>wait("project",`${esc(p.name)}<small>no next action</small>`,()=>openProject(p)));
+  S.ideas.filter(i=>(i.status==="seed"||i.status==="developing")&&i.kind!=="question").map(i=>{const st=(i.perspectives||[]).map(p=>p.stance);
+      const miss=!st.includes("against")?"no view against it yet":(new Set((i.perspectives||[]).map(p=>(p.who||"").trim().toLowerCase()).filter(Boolean)).size<2?"all views from one source":!i.flip?"nothing would change your mind yet":"");
+      return [i,miss]}).filter(([,m])=>m).slice(0,3).forEach(([i,m])=>wait("idea",`${esc(i.title)}<small>${m}</small>`,()=>openIdea(i)));
+  $("#homeAlso").innerHTML=also;$("#homeAlsoBox").hidden=!also;wireAg($("#homeAlso"),afns)}
+wireQuick("homeAdd","homeAddT",null,{star:true});
+
+/* ---------- PROJECTS ---------- */
+function projCard(p){const ts=S.tasks.filter(t=>t.projectId===p.id);const open=sortTasks(ts.filter(t=>!t.done));const done=ts.length-open.length;
+  const pct=ts.length?Math.round(100*done/ts.length):0;
+  return `<button class="card" data-proj="${esc(p.id)}"><span class="row" style="justify-content:space-between;gap:8px"><span class="t">${esc(p.name)}</span>${p.status!=="active"?`<span class="pill">${esc(p.status)}</span>`:p.deadline?`<span class="pill ${daysTo(p.deadline)<=7?"due":""}">${esc(fmtDay(p.deadline))}</span>`:""}</span>
+  ${open[0]?`<span class="nx"><b>Next</b>${esc(open[0].title)}</span>`:`<span class="nx mini">No next action. Add one.</span>`}
+  <span class="bar" aria-hidden="true"><i style="width:${pct}%"></i></span><span class="m">${open.length} open · ${done} done</span></button>`}
+function wireProjCards(root){root.querySelectorAll("[data-proj]").forEach(b=>b.onclick=()=>openProject(S.projects.find(p=>p.id===b.dataset.proj)))}
+const PF=[["active","Active"],["paused","Paused"],["done","Done"],["all","All"]];
+$("#projFilter").innerHTML=PF.map(([k,l])=>`<button class="chip" data-k="${k}">${l}</button>`).join("");
+$("#projFilter").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{S.projFilter=c.dataset.k;renderProjects()});
+function renderProjects(){$("#projFilter").querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.k===S.projFilter));
+  const inbox=sortTasks(openTasks().filter(t=>!t.projectId&&!t.courseId));
+  $("#inboxList").innerHTML=taskList(inbox,false,"Inbox is clear. Capture anything here, then file it under a project or course.");wireTasks($("#inboxList"));
+  const xs=S.projects.filter(p=>S.projFilter==="all"||p.status===S.projFilter);
+  $("#projList").innerHTML=!S.projects.length?`<div class="empty"><b>No projects yet.</b> A project is anything with more than one step: the Integration Bee, your Lean expo stall, the mine-tailings web app.</div>`
+    :xs.length?xs.map(projCard).join(""):`<p class="hint">No ${esc(S.projFilter)} projects.</p>`;wireProjCards($("#projList"))}
+$("#newProject").onclick=()=>openProject(null);
+wireQuick("inboxAdd","inboxAddT","inboxAddD",{});
+
+function openProject(p){if(!p){return editProject(null)}
+  const draw=()=>{const cur=S.projects.find(x=>x.id===p.id);if(!cur){$("#editorRoot").innerHTML="";return}p=cur;
+    const ts=S.tasks.filter(t=>t.projectId===p.id);const open=sortTasks(ts.filter(t=>!t.done));const done=ts.filter(t=>t.done).sort((a,b)=>(b.doneAt||"").localeCompare(a.doneAt||""));
+    $("#pdHead").innerHTML=`<dl class="kv"><dt>Status</dt><dd>${esc(p.status)}</dd>${p.outcome?`<dt>Outcome</dt><dd>${esc(p.outcome)}</dd>`:""}${p.deadline?`<dt>Deadline</dt><dd>${esc(fmtDay(p.deadline))} (${daysTo(p.deadline)} days)</dd>`:""}${p.notes?`<dt>Notes</dt><dd style="white-space:pre-wrap">${esc(p.notes)}</dd>`:""}</dl>`;
+    $("#pdOpen").innerHTML=taskList(open,false,"No next actions. What's the very next physical step?");
+    $("#pdDone").innerHTML=done.length?`<h3>Done (${done.length})</h3>`+done.slice(0,8).map(t=>taskRow(t,false)).join(""):"";
+    wireTasks($("#pdOpen"),()=>openProject(p));wireTasks($("#pdDone"),()=>openProject(p))};
+  editor(p.name,`<div id="pdHead"></div><button class="btn" id="pdEdit" style="align-self:flex-start">Edit project</button>
+    <h3>Next actions</h3><div id="pdOpen"></div>
+    <form class="qadd" id="pdAdd"><input type="text" id="pdAddT" placeholder="Add a next action"><input type="date" id="pdAddD" aria-label="Due date"><button class="btn primary" type="submit">Add</button></form>
+    <div id="pdDone"></div>`,close=>{draw();S.sheetRefresh=draw;$("#pdEdit").onclick=()=>editProject(p);wireQuick("pdAdd","pdAddT","pdAddD",{projectId:p.id})})}
+function editProject(p){const x=Object.assign({status:"active"},p||{});
+  editor(p?"Edit project":"New project",`<label class="f">Project<input type="text" id="p-name" value="${esc(x.name||"")}" placeholder="e.g. Integration Bee"></label>
+  <label class="f">What "done" looks like<small>The outcome, stated so you'd know when you've reached it.</small><input type="text" id="p-outcome" value="${esc(x.outcome||"")}"></label>
+  <label class="f">Deadline<small>Optional.</small><input type="date" id="p-deadline" value="${esc(x.deadline||"")}"></label>
+  <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Status</span><div class="chips" id="p-status">${["active","paused","done"].map(s=>`<button class="chip" type="button" data-v="${s}" aria-pressed="${s===x.status}">${s}</button>`).join("")}</div></div>
+  <label class="f">Notes<textarea id="p-notes">${esc(x.notes||"")}</textarea></label>
+  ${gcChip(x)}
+  <div class="row"><button class="btn primary" id="pSave">Save project</button>${p?`<button class="btn danger" id="pDel">Delete</button>`:""}</div><div class="confirm" id="delBox"></div>`,close=>{
+    let st=x.status;const gcOn=wireGc();chipPick("#p-status",v=>st=v);
+    if(p)$("#pDel").onclick=delRow(close,S.db.doc("projects/"+p.id),"project (its tasks move to the Inbox view only if you refile them)");
+    $("#pSave").onclick=async()=>{if(!S.db)return;const name=$("#p-name").value.trim();if(!name){toast("Name the project");return}
+      const now=new Date().toISOString();const body={name,outcome:$("#p-outcome").value.trim(),deadline:$("#p-deadline").value||null,status:st,notes:$("#p-notes").value.trim(),gcalId:x.gcalId||null,created:x.created||now,updated:now};
+      if(gcOn()&&!body.deadline){toast("Set a deadline to put it in Google Calendar");return}
+      $("#pSave").disabled=true;const gn=await maybeGc(gcOn(),body,name,body.deadline,"Project deadline");
+      try{const ref=p?S.db.doc("projects/"+p.id):S.db.collection("projects").doc();await ref.set(body);toast("Project saved"+gn);openProject(Object.assign({id:ref.id},body))}catch(e){$("#pSave").disabled=false;toast("Couldn't save. Try again")}}})}
+function chipPick(sel,cb){const box=document.querySelector(sel);box.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{box.querySelectorAll(".chip").forEach(o=>o.setAttribute("aria-pressed",o===c));cb(c.dataset.v)})}
+
+/* ---------- task editor ---------- */
+function openTask(t,seed,back){const x=Object.assign({},t||seed||{});
+  const link=x.projectId?"p:"+x.projectId:x.courseId?"c:"+x.courseId:"";
+  const opts=[["","Inbox"]].concat(S.projects.filter(p=>p.status!=="done"||p.id===x.projectId).map(p=>["p:"+p.id,p.name]),S.courses.filter(c=>c.status!=="done"||c.id===x.courseId).map(c=>["c:"+c.id,c.code||c.name]));
+  editor(t?"Edit task":"New task",`<label class="f">Task<input type="text" id="t-title" value="${esc(x.title||"")}"></label>
+  <div class="row"><label class="f" style="flex:1 1 160px">Due<input type="date" id="t-due" value="${esc(x.due||"")}"></label>
+    <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Today</span><div class="chips"><button class="chip" type="button" id="t-star" aria-pressed="${!!x.star}">★ Do today</button></div></div></div>
+  <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Belongs to</span><div class="chips" id="t-link">${opts.map(([v,l])=>`<button class="chip" type="button" data-v="${esc(v)}" aria-pressed="${v===link}">${esc(l)}</button>`).join("")}</div></div>
+  <label class="f">Notes<textarea id="t-notes">${esc(x.notes||"")}</textarea></label>
+  ${gcChip(x)}
+  <div class="row"><button class="btn primary" id="tSave">Save task</button>${t?`<button class="btn" id="tDone">${t.done?"Mark not done":"Mark done"}</button><button class="btn danger" id="tDel">Delete</button>`:""}</div><div class="confirm" id="delBox"></div>`,close=>{
+    const after=()=>{if(back)back();else close()};
+    let lk=link,star=!!x.star;const gcOn=wireGc();chipPick("#t-link",v=>lk=v);$("#t-star").onclick=()=>{star=!star;$("#t-star").setAttribute("aria-pressed",star)};
+    if(t){$("#tDel").onclick=delRow(after,S.db.doc("tasks/"+t.id),"task");$("#tDone").onclick=async()=>{await toggleTask(t.id);after()}}
+    $("#tSave").onclick=async()=>{if(!S.db)return;const title=$("#t-title").value.trim();if(!title){toast("Write the task");return}
+      const now=new Date().toISOString();const body={title,due:$("#t-due").value||null,star,notes:$("#t-notes").value.trim(),
+        projectId:lk.startsWith("p:")?lk.slice(2):null,courseId:lk.startsWith("c:")?lk.slice(2):null,done:!!x.done,doneAt:x.doneAt||null,gcalId:x.gcalId||null,created:x.created||now,updated:now};
+      if(gcOn()&&!body.due){toast("Give the task a due date to put it in Google Calendar");return}
+      $("#tSave").disabled=true;const gn=await maybeGc(gcOn(),body,title,body.due,"Task");
+      try{await (t?S.db.doc("tasks/"+t.id):S.db.collection("tasks").doc()).set(body);toast("Task saved"+gn);after()}catch(e){$("#tSave").disabled=false;toast("Couldn't save. Try again")}}})}
+
+/* ---------- STUDIES ---------- */
+const courseByCal=cid=>{const c=S.courses.find(c=>c.calendarId&&c.calendarId===cid);return c?(c.code||c.name):""};
+const calName=cid=>S.gcal.names[cid]||(cid==="primary"?"Primary calendar":cid);
+const classroomFor=c=>c.calendarId?S.gcal.items.filter(x=>x.calId===c.calendarId&&x.date>=todayStr()).sort((p,q)=>p.date.localeCompare(q.date)):[];
+function nextUp(c){const a=nextAssess(c.id);const g=classroomFor(c)[0];
+  const gi=g?{kind:/\b(exam|quiz|test|mid.?sem|end.?sem)\b/i.test(g.title)?"exam":"classroom",title:g.title.replace(/^Assignment:\s*/i,""),due:g.date}:null;
+  if(a&&gi)return a.due<=gi.due?a:gi;return a||gi}
+function nextAssess(cid){return S.assess.filter(a=>a.courseId===cid&&a.status==="upcoming"&&a.due&&a.due>=todayStr()).sort((a,b)=>a.due.localeCompare(b.due))[0]}
+function courseCard(c){const na=nextUp(c);const ot=openTasks().filter(t=>t.courseId===c.id).length;
+  return `<button class="card" data-course="${esc(c.id)}"><span class="row" style="justify-content:space-between;gap:8px"><span class="t">${esc(c.name)}</span>${c.code?`<span class="pill">${esc(c.code)}</span>`:""}</span>
+  ${c.topics?`<span class="nx"><b>Now</b>${esc(c.topics)}</span>`:""}
+  ${na?`<span class="nx"><b>${esc(na.kind)}</b>${esc(na.title)} · ${esc(fmtDay(na.due))}</span>`:`<span class="mini">No upcoming assessments</span>`}
+  <span class="m">${ot} open task${ot===1?"":"s"}${c.status==="done"?" · finished":""}</span></button>`}
+function wireCourseCards(root){root.querySelectorAll("[data-course]").forEach(b=>b.onclick=()=>openCourse(S.courses.find(c=>c.id===b.dataset.course)))}
+function assessRows(xs,root,showCourse,back){const fns=[];root.innerHTML=xs.length?xs.map(a=>{fns.push(()=>openAssess(a,null,back));
+  const st=a.status==="graded"?`graded${a.result?" · "+a.result:""}`:a.status;
+  return agRow(a.due?esc(parse(a.due).toLocaleDateString(undefined,{day:"numeric",month:"short"})):"—",`<span class="kind ${a.kind==="exam"||a.kind==="quiz"?"exam":"deadline"}">${esc(a.kind)}</span>${esc(a.title)}<small>${showCourse?esc(courseName(a.courseId)||"")+" · ":""}${esc(st)}</small>`,fns.length-1)}).join(""):`<p class="hint">Nothing here yet.</p>`;wireAg(root,fns)}
+function renderStudies(){const cs=S.courses.slice().sort((a,b)=>(a.status==="done")-(b.status==="done"));
+  $("#courseList").innerHTML=cs.length?cs.map(courseCard).join(""):`<div class="empty"><b>No courses yet.</b> Add each course you're taking this semester, with the topic you're on right now.</div>`;wireCourseCards($("#courseList"));
+  const t=todayStr();const up=S.assess.filter(a=>a.status==="upcoming").sort((a,b)=>(a.due||"9999").localeCompare(b.due||"9999"));
+  const past=S.assess.filter(a=>a.status!=="upcoming").sort((a,b)=>(b.due||"").localeCompare(a.due||"")).slice(0,6);
+  assessRows(up.concat(past),$("#assessList"),true)}
+$("#newCourse").onclick=()=>editCourse(null);
+$("#newAssess").onclick=()=>{if(!S.courses.length){toast("Add a course first");editCourse(null);return}openAssess(null,{courseId:S.courses[0].id})};
+function openCourse(c){const draw=()=>{const cur=S.courses.find(x=>x.id===c.id);if(!cur){$("#editorRoot").innerHTML="";return}c=cur;
+    $("#cdHead").innerHTML=`<dl class="kv">${c.code?`<dt>Code</dt><dd>${esc(c.code)}</dd>`:""}${c.who?`<dt>Teacher</dt><dd>${esc(c.who)}</dd>`:""}${c.topics?`<dt>Now</dt><dd>${esc(c.topics)}</dd>`:""}${c.calendarId?`<dt>Classroom</dt><dd>${esc(calName(c.calendarId))}</dd>`:""}${c.notes?`<dt>Notes</dt><dd style="white-space:pre-wrap">${esc(c.notes)}</dd>`:""}</dl>`;
+    {const gi=classroomFor(c);$("#cdClass").innerHTML=c.calendarId?`<h3>Due on Google Classroom</h3><div class="agenda">${gi.length?rowsHtml(gi.map(g=>({t:parse(g.date).toLocaleDateString(undefined,{day:"numeric",month:"short"}),html:esc(g.title.replace(/^Assignment:\s*/i,"")),href:g.link})),[]):`<p class="hint">${S.gcal.state==="ok"?"Nothing due in the next two weeks.":"Shows once Google Calendar loads."}</p>`}</div>`:""}
+    assessRows(S.assess.filter(a=>a.courseId===c.id).sort((a,b)=>(a.due||"9999").localeCompare(b.due||"9999")),$("#cdAssess"),false,()=>openCourse(c));
+    $("#cdTasks").innerHTML=taskList(sortTasks(openTasks().filter(t=>t.courseId===c.id)),false,"No open tasks for this course.");wireTasks($("#cdTasks"),()=>openCourse(c))};
+  editor(c.name,`<div id="cdHead"></div><button class="btn" id="cdEdit" style="align-self:flex-start">Edit course</button><div id="cdClass" style="display:flex;flex-direction:column;gap:6px"></div>
+    <div class="row" style="justify-content:space-between"><h3>Assignments &amp; exams</h3><button class="btn" id="cdNewA">Add</button></div><div class="agenda" id="cdAssess"></div>
+    <h3>Tasks</h3><div id="cdTasks"></div>
+    <form class="qadd" id="cdAdd"><input type="text" id="cdAddT" placeholder="Add a task, e.g. Revise chapter 4"><input type="date" id="cdAddD" aria-label="Due date"><button class="btn primary" type="submit">Add</button></form>`,close=>{
+    draw();S.sheetRefresh=draw;$("#cdEdit").onclick=()=>editCourse(c);$("#cdNewA").onclick=()=>openAssess(null,{courseId:c.id},()=>openCourse(c));wireQuick("cdAdd","cdAddT","cdAddD",{courseId:c.id})})}
+function editCourse(c){const x=Object.assign({status:"current"},c||{});
+  editor(c?"Edit course":"New course",`<label class="f">Course<input type="text" id="c-name" value="${esc(x.name||"")}" placeholder="e.g. Real Analysis II"></label>
+  <div class="row"><label class="f" style="flex:1 1 120px">Code<input type="text" id="c-code" value="${esc(x.code||"")}" placeholder="MA 202"></label><label class="f" style="flex:2 1 180px">Teacher<input type="text" id="c-who" value="${esc(x.who||"")}"></label></div>
+  <label class="f">What I'm studying now<small>Current chapter or topic. Update it as the course moves.</small><input type="text" id="c-topics" value="${esc(x.topics||"")}"></label>
+  <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Status</span><div class="chips" id="c-status">${["current","done"].map(s=>`<button class="chip" type="button" data-v="${s}" aria-pressed="${s===x.status}">${s}</button>`).join("")}</div></div>
+  <label class="f">Google Classroom calendar<small>Links the course to its Classroom due dates, so its next assignment shows on the card.</small><select id="c-cal"><option value="">None</option>${x.calendarId?`<option value="${esc(x.calendarId)}" selected>${esc(calName(x.calendarId))}</option>`:""}</select></label>
+  <label class="f">Notes<small>Grading scheme, office hours, textbook.</small><textarea id="c-notes">${esc(x.notes||"")}</textarea></label>
+  <div class="row"><button class="btn primary" id="cSave">Save course</button>${c?`<button class="btn danger" id="cDel">Delete</button>`:""}</div><div class="confirm" id="delBox"></div>`,close=>{
+    let st=x.status;chipPick("#c-status",v=>st=v);
+    if(MCP)MCP.callTool(GC,"list_calendars",{pageSize:250},{cache:{staleTime:60000}}).then(r=>{const sel=$("#c-cal");if(!sel)return;const cur=sel.value;
+      const cs=((r.payload&&r.payload.calendars)||[]).filter(k=>String(k.id).startsWith("c_classroom"));cs.forEach(k=>S.gcal.names[k.id]=(k.summary||k.id).replace(/\s*\|.*$/,"").trim());
+      sel.innerHTML=`<option value="">None</option>`+cs.map(k=>`<option value="${esc(k.id)}" ${k.id===cur?"selected":""}>${esc(calName(k.id))}</option>`).join("")}).catch(()=>{});
+    if(c)$("#cDel").onclick=delRow(close,S.db.doc("courses/"+c.id),"course");
+    $("#cSave").onclick=async()=>{if(!S.db)return;const name=$("#c-name").value.trim();if(!name){toast("Name the course");return}
+      const now=new Date().toISOString();const body={name,code:$("#c-code").value.trim(),who:$("#c-who").value.trim(),topics:$("#c-topics").value.trim(),status:st,calendarId:$("#c-cal").value||null,notes:$("#c-notes").value.trim(),created:x.created||now,updated:now};
+      if(body.calendarId&&S.gcal.cals&&!S.gcal.cals.includes(body.calendarId)){try{await S.db.doc("settings/gcal").set({cals:S.gcal.cals.concat(body.calendarId),updated:now})}catch(e){}}
+      try{const ref=c?S.db.doc("courses/"+c.id):S.db.collection("courses").doc();await ref.set(body);toast("Course saved");openCourse(Object.assign({id:ref.id},body))}catch(e){toast("Couldn't save. Try again")}}})}
+function openAssess(a,seed,back){const x=Object.assign({kind:"assignment",status:"upcoming"},a||seed||{});
+  editor(a?"Edit assessment":"New assignment or exam",`<label class="f">Title<input type="text" id="a-title" value="${esc(x.title||"")}" placeholder="e.g. Problem set 5"></label>
+  <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Course</span><div class="chips" id="a-course">${S.courses.map(c=>`<button class="chip" type="button" data-v="${esc(c.id)}" aria-pressed="${c.id===x.courseId}">${esc(c.code||c.name)}</button>`).join("")}</div></div>
+  <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Kind</span><div class="chips" id="a-kind">${["assignment","quiz","exam","presentation","project"].map(s=>`<button class="chip" type="button" data-v="${s}" aria-pressed="${s===x.kind}">${s}</button>`).join("")}</div></div>
+  <div class="row"><label class="f" style="flex:1 1 150px">Due / date<input type="date" id="a-due" value="${esc(x.due||"")}"></label><label class="f" style="flex:1 1 110px">Weight<small>Optional</small><input type="text" id="a-weight" value="${esc(x.weight||"")}" placeholder="20%"></label></div>
+  <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Status</span><div class="chips" id="a-status">${["upcoming","submitted","graded"].map(s=>`<button class="chip" type="button" data-v="${s}" aria-pressed="${s===x.status}">${s}</button>`).join("")}</div></div>
+  <label class="f">Result<small>Score or grade, once you have it.</small><input type="text" id="a-result" value="${esc(x.result||"")}"></label>
+  <label class="f">Notes<small>Syllabus, what to revise.</small><textarea id="a-notes">${esc(x.notes||"")}</textarea></label>
+  ${gcChip(x)}
+  <div class="row"><button class="btn primary" id="aSave">Save</button>${a?`<button class="btn danger" id="aDel">Delete</button>`:""}</div><div class="confirm" id="delBox"></div>`,close=>{
+    const after=()=>{if(back)back();else close()};
+    let cid=x.courseId,kind=x.kind,st=x.status;const gcOn=wireGc();chipPick("#a-course",v=>cid=v);chipPick("#a-kind",v=>kind=v);chipPick("#a-status",v=>st=v);
+    if(a)$("#aDel").onclick=delRow(after,S.db.doc("assessments/"+a.id),"item");
+    $("#aSave").onclick=async()=>{if(!S.db)return;const title=$("#a-title").value.trim();if(!title||!cid){toast(!title?"Give it a title":"Pick a course");return}
+      const now=new Date().toISOString();const body={title,courseId:cid,kind,due:$("#a-due").value||null,weight:$("#a-weight").value.trim(),status:st,result:$("#a-result").value.trim(),notes:$("#a-notes").value.trim(),gcalId:x.gcalId||null,created:x.created||now,updated:now};
+      if(gcOn()&&!body.due){toast("Add the date to put it in Google Calendar");return}
+      $("#aSave").disabled=true;const gn=await maybeGc(gcOn(),body,title,body.due,[courseName(cid),kind].filter(Boolean).join(" "));
+      try{await (a?S.db.doc("assessments/"+a.id):S.db.collection("assessments").doc()).set(body);toast("Saved"+gn);after()}catch(e){$("#aSave").disabled=false;toast("Couldn't save. Try again")}}})}
+
+/* ---------- WEEK ---------- */
+function renderWeek(){const a=S.kStart,t=todayStr();
+  $("#kTitle").textContent=isoWeek(a)+" · "+parse(a).toLocaleDateString(undefined,{day:"numeric",month:"short"})+" – "+parse(addDays(a,6)).toLocaleDateString(undefined,{day:"numeric",month:"short"});
+  const fns=[];let html="";
+  for(let i=0;i<7;i++){const d=addDays(a,i);
+    const rows=rowsHtml(dayItems(d).concat(dueItems(d).map(x=>Object.assign({},x,{t:"due"}))),fns);
+    html+=`<div class="day ${d===t?"is-today":""}"><h3><span>${esc(parse(d).toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"short"}))}${d===t?" · today":""}</span></h3>
+      <div class="agenda">${rows||`<p class="hint">Free.</p>`}</div></div>`}
+  $("#weekDays").innerHTML=html;wireAg($("#weekDays"),fns);rewatch()}
+$("#kPrev").onclick=()=>{S.kStart=addDays(S.kStart,-7);rewatch();renderWeek()};
+$("#kNext").onclick=()=>{S.kStart=addDays(S.kStart,7);rewatch();renderWeek()};
+$("#newEvent").onclick=()=>openEvent(null);
+const DN=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+function openEvent(e){const x=Object.assign({kind:"class",repeat:"weekly",days:[dow(todayStr())],date:todayStr(),start:"09:00",end:"10:00"},e||{});
+  editor(e?"Edit schedule item":"Add to schedule",`<label class="f">What<input type="text" id="v-title" value="${esc(x.title||"")}" placeholder="e.g. Real Analysis lecture"></label>
+  <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Kind</span><div class="chips" id="v-kind">${["class","lab","study","meeting","practice","other"].map(s=>`<button class="chip" type="button" data-v="${s}" aria-pressed="${s===x.kind}">${s}</button>`).join("")}</div></div>
+  <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Repeats</span><div class="chips" id="v-rep">${[["weekly","Every week"],["once","Just once"]].map(([v,l])=>`<button class="chip" type="button" data-v="${v}" aria-pressed="${v===x.repeat}">${l}</button>`).join("")}</div></div>
+  <div id="v-weekly" style="display:flex;flex-direction:column;gap:10px"><div class="chips" id="v-days">${DN.map((n,i)=>`<button class="chip" type="button" data-d="${i+1}" aria-pressed="${(x.days||[]).includes(i+1)}">${n}</button>`).join("")}</div>
+    <div class="row"><label class="f" style="flex:1 1 140px">From<small>Optional</small><input type="date" id="v-from" value="${esc(x.from||"")}"></label><label class="f" style="flex:1 1 140px">Until<small>e.g. end of semester</small><input type="date" id="v-until" value="${esc(x.until||"")}"></label></div></div>
+  <label class="f" id="v-once">Date<input type="date" id="v-date" value="${esc(x.date||"")}"></label>
+  <div class="row"><label class="f" style="flex:1 1 120px">Starts<input type="time" id="v-start" value="${esc(x.start||"")}"></label><label class="f" style="flex:1 1 120px">Ends<input type="time" id="v-end" value="${esc(x.end||"")}"></label></div>
+  <label class="f">Where<input type="text" id="v-loc" value="${esc(x.location||"")}"></label>
+  ${S.courses.length?`<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Course</span><div class="chips" id="v-course"><button class="chip" type="button" data-v="" aria-pressed="${!x.courseId}">None</button>${S.courses.map(c=>`<button class="chip" type="button" data-v="${esc(c.id)}" aria-pressed="${c.id===x.courseId}">${esc(c.code||c.name)}</button>`).join("")}</div></div>`:""}
+  ${MCP&&!e&&S.gcal.state!=="denied"?`<div class="chips"><button class="chip" type="button" id="v-gc" aria-pressed="true">Also add to Google Calendar</button></div>`:""}
+  ${e&&e.gcalId?`<p class="hint">This is also in Google Calendar. Edits here don't change the Google copy.</p>`:""}
+  <div class="row"><button class="btn primary" id="vSave">Save</button>${e?`<button class="btn danger" id="vDel">Delete</button>`:""}</div><div class="confirm" id="delBox"></div>`,close=>{
+    let kind=x.kind,rep=x.repeat,days=(x.days||[]).slice(),cid=x.courseId||"";
+    let toGc=!!$("#v-gc");if($("#v-gc"))$("#v-gc").onclick=()=>{toGc=!toGc;$("#v-gc").setAttribute("aria-pressed",toGc)};
+    const paint=()=>{$("#v-weekly").hidden=rep!=="weekly";$("#v-once").hidden=rep!=="once"};paint();
+    chipPick("#v-kind",v=>kind=v);chipPick("#v-rep",v=>{rep=v;paint()});if(S.courses.length)chipPick("#v-course",v=>cid=v);
+    $("#v-days").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{const d=+c.dataset.d;days=days.includes(d)?days.filter(z=>z!==d):days.concat(d).sort();c.setAttribute("aria-pressed",days.includes(d))});
+    if(e&&!e.gcalId)$("#vDel").onclick=delRow(close,S.db.doc("events/"+e.id),"schedule item");
+    if(e&&e.gcalId)$("#vDel").onclick=()=>{const box=$("#delBox");box.innerHTML=`<span>Delete this item?</span><button class="btn danger" id="delBoth">Here and in Google Calendar</button><button class="btn" id="delHere">Only here</button><button class="btn ghost" id="delNo">Keep</button>`;
+      $("#delNo").onclick=()=>box.innerHTML="";
+      const go=async both=>{if(both&&MCP){try{await MCP.callTool(GC,"delete_event",{eventId:e.gcalId,notificationLevel:"NONE"});MCP.invalidate(GC,"list_events").catch(()=>{})}catch(err){toast("Couldn't delete it from Google Calendar; delete it there if needed")}}
+        try{await S.db.doc("events/"+e.id).delete();close();toast("Deleted")}catch(err){toast("Couldn't delete")}};
+      $("#delBoth").onclick=()=>go(true);$("#delHere").onclick=()=>go(false)};
+    $("#vSave").onclick=async()=>{if(!S.db)return;const title=$("#v-title").value.trim();if(!title){toast("Name it");return}
+      if(rep==="weekly"&&!days.length){toast("Pick at least one day");return}
+      const now=new Date().toISOString();const body={title,kind,repeat:rep,days:rep==="weekly"?days:[],date:rep==="once"?($("#v-date").value||todayStr()):null,
+        from:rep==="weekly"?($("#v-from").value||null):null,until:rep==="weekly"?($("#v-until").value||null):null,
+        start:$("#v-start").value||"",end:$("#v-end").value||"",location:$("#v-loc").value.trim(),courseId:cid||null,gcalId:x.gcalId||null,created:x.created||now,updated:now};
+      $("#vSave").disabled=true;let gcNote="";
+      if(toGc&&MCP){try{body.gcalId=await gcalCreate(body);gcNote=" and added to Google Calendar";MCP.invalidate(GC,"list_events").catch(()=>{})}
+        catch(err){gcNote=err&&err.code==="needs_reauth"?". Reconnect Google Calendar to add it there":err&&err.code==="approval_required"?". Google Calendar wasn't allowed, so it's only saved here":". Couldn't add it to Google Calendar"}}
+      try{await (e?S.db.doc("events/"+e.id):S.db.collection("events").doc()).set(body);close();toast("Saved"+gcNote)}catch(err){$("#vSave").disabled=false;toast("Couldn't save. Try again")}}})}
+
+function renderPlanning(){renderHome();renderProjects();renderStudies();renderWeek();paintGcal();if(S.sheetRefresh)try{S.sheetRefresh()}catch(e){}}
+
+/* ---------- unified day items (local + Google Calendar) ---------- */
+function dayItems(d){const out=eventsOn(d).map(e=>({t:e.start||"—",html:evHtml(e),open:()=>openEvent(e)}));
+  gcalOn(d).filter(g=>!g.classroom).forEach(g=>out.push({t:g.allDay?"all day":g.time,html:`<span class="kind gcal">${g.allDay?"all day":"calendar"}</span>${esc(g.title)}<small>${esc([g.location,g.cal].filter(Boolean).join(" · "))}</small>`,href:g.link}));
+  return out.sort((a,b)=>(a.t==="all day"?"00":a.t).localeCompare(b.t==="all day"?"00":b.t))}
+function dueItems(d){const out=deadlinesOn(d).map(x=>({html:`<span class="kind ${x.kind}">${esc(x.label)}</span>${esc(x.title)}${x.ctx?`<small>${esc(x.ctx)}</small>`:""}`,open:x.open}));
+  gcalOn(d).filter(g=>g.classroom).forEach(g=>out.push({html:`<span class="kind deadline">classroom</span>${esc(g.title.replace(/^Assignment:\s*/i,""))}<small>${esc(courseByCal(g.calId)||g.cal)}${g.allDay?"":" · "+esc(g.time)}</small>`,href:g.link}));
+  return out}
+function rowsHtml(items,fns){return items.map(x=>{const when=`<span class="when">${esc(x.t||"")}</span>`;
+  if(x.href)return `<a class="ag" href="${esc(x.href)}" target="_blank" rel="noopener">${when}<span class="what">${x.html}</span></a>`;
+  fns.push(x.open);return `<button class="ag" data-ag="${fns.length-1}">${when}<span class="what">${x.html}</span></button>`}).join("")}
+
+/* ---------- Google Calendar ---------- */
+const GC="Google Calendar";
+S.gcal={state:"off",err:"",byCal:{},items:[],cals:null,unsubs:[],key:"",names:{}};
+let MCP=null;
+const GC_DENY=["needs_reauth","server_not_connected","blocked_by_policy","approval_required","not_in_manifest","selection_required","not_granted","capability_disabled","capability_removed"];
+function gcalWindow(){const t=todayStr();const a=S.kStart<t?S.kStart:t;const b1=addDays(t,16),b2=addDays(S.kStart,8);return [a,b1>b2?b1:b2]}
+function gcalInput(cid){const [a,b]=gcalWindow();const i={startTime:a+"T00:00:00",endTime:b+"T00:00:00",orderBy:"startTime",pageSize:250};if(cid!=="primary")i.calendarId=cid;return i}
+function rewatch(force){if(!MCP)return;const cals=S.gcal.cals||["primary"];const key=gcalWindow().join()+cals.join();
+  if(!force&&key===S.gcal.key)return;S.gcal.key=key;S.gcal.unsubs.forEach(u=>{try{u()}catch(e){}});S.gcal.unsubs=[];S.gcal.byCal={};
+  if(S.gcal.state!=="ok")S.gcal.state="loading";paintGcal();
+  cals.forEach(cid=>{S.gcal.unsubs.push(MCP.watchTool(GC,"list_events",gcalInput(cid),ev=>{
+    if(ev.type==="data"){const p=ev.result.payload||{};S.gcal.byCal[cid]={name:p.summary||"",items:Array.isArray(p.events)?p.events:[]};S.gcal.state="ok";S.gcal.err="";
+      S.gcal.at=(ev.result.cache&&ev.result.cache.storedAt)||Date.now()}
+    else{const c=ev.error&&ev.error.code;if(GC_DENY.includes(c)){delete S.gcal.byCal[cid];S.gcal.state="denied"}else if(S.gcal.state!=="ok")S.gcal.state="err";S.gcal.err=c||"upstream_error"}
+    gcalRebuild()},{refetchInterval:300000}))})}
+function gcalRebuild(){const local=new Set([].concat(S.events,S.tasks,S.assess,S.projects).map(e=>e.gcalId).filter(Boolean));const out=[];
+  Object.entries(S.gcal.byCal).forEach(([cid,c])=>c.items.forEach(e=>{if(!e||e.status==="cancelled")return;
+    const base=String(e.recurringEventId||e.id||"").split("_")[0];if(local.has(base)||local.has(e.id))return;
+    const st=e.start||{};let date,time="",allDay=false;
+    if(st.dateTime){const dt=new Date(st.dateTime);date=ymd(dt);time=pad(dt.getHours())+":"+pad(dt.getMinutes())}else if(st.date){date=String(st.date).slice(0,10);allDay=true}else return;
+    if(cid==="primary"&&eventsOn(date).some(l=>l.title===e.summary&&(l.start||"")===time))return;
+    if(cid==="primary"&&allDay&&deadlinesOn(date).some(l=>l.title===e.summary))return;
+    const name=(c.name||"").replace(/\s*\|.*$/,"").trim();if(c.name)S.gcal.names[cid]=name;
+    out.push({id:e.id,title:e.summary||"(no title)",date,time,allDay,link:e.htmlLink||"",location:e.location||"",cal:cid==="primary"?"":name,classroom:cid.startsWith("c_classroom"),calId:cid})}));
+  S.gcal.items=out;scheduleMirror();renderHome();renderStudies();renderWeek();paintGcal();if(S.sheetRefresh)try{S.sheetRefresh()}catch(e){}}
+/* a copy of the next 15 days of calendar items, so the evening nudge and weekly review can read them without a calendar connection */
+let mirrorT=null,mirrorLast=null;
+function scheduleMirror(){if(!S.db||S.gcal.state!=="ok")return;clearTimeout(mirrorT);mirrorT=setTimeout(async()=>{const t=todayStr(),end=addDays(t,15);
+  const items=S.gcal.items.filter(g=>g.date>=t&&g.date<=end).map(g=>({title:g.title,date:g.date,time:g.time||"",allDay:!!g.allDay,cal:g.cal||"",calId:g.calId||"",classroom:!!g.classroom}))
+    .sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  const sig=t+JSON.stringify(items);if(sig===mirrorLast)return;
+  if(mirrorLast===null){try{const d=await S.db.doc("cache/gcal").get();const v=d.exists?d.data():null;if(v&&v.day===t&&JSON.stringify(v.items||[])===JSON.stringify(items)){mirrorLast=sig;return}}catch(e){}}
+  try{await S.db.doc("cache/gcal").set({items,day:t,at:new Date().toISOString()});mirrorLast=sig}catch(e){}},5000)}
+function gcalOn(d){return S.gcal.items.filter(g=>g.date===d)}
+function paintGcal(){const box=$("#gcalBar");if(!box)return;const g=S.gcal;let msg="",btn="";
+  if(g.state==="off")msg="Google Calendar isn't available in this view.";
+  else if(g.state==="loading")msg="Loading Google Calendar…";
+  else if(g.state==="ok")msg=`Google Calendar · ${(g.cals||["primary"]).length} calendar${(g.cals||[1]).length===1?"":"s"} shown`;
+  else if(g.err==="approval_required"){msg="Google Calendar needs your OK for this page.";btn=`<button class="btn" id="gcAllow">Allow</button>`}
+  else if(g.err==="needs_reauth")msg="Reconnect Google Calendar in claude.ai Settings → Connectors.";
+  else if(g.err==="server_not_connected")msg="Add Google Calendar in claude.ai Settings → Connectors.";
+  else if(g.err==="not_in_manifest")msg="Google Calendar is turned off for this page. Turn it on from the page's permissions.";
+  else if(g.err==="selection_required")msg="Choose which Google Calendar connection to use in the prompt claude.ai shows.";
+  else msg="Couldn't reach Google Calendar just now. It will retry on its own.";
+  box.innerHTML=`<span class="status">${esc(msg)}</span><span class="row">${btn}${g.state!=="off"?`<button class="btn ghost" id="gcPick">Choose calendars</button>`:""}</span>`;
+  const al=$("#gcAllow");if(al)al.onclick=async()=>{try{await MCP.callTool(GC,"list_events",gcalInput("primary"));rewatch(true)}catch(e){toast("Google Calendar wasn't allowed")}};
+  const pk=$("#gcPick");if(pk)pk.onclick=pickCalendars}
+async function pickCalendars(){if(!MCP)return;let list;
+  try{const r=await MCP.callTool(GC,"list_calendars",{pageSize:250},{cache:{staleTime:60000}});list=(r.payload&&r.payload.calendars)||[]}catch(e){toast(e.code==="needs_reauth"?"Reconnect Google Calendar in Settings → Connectors":"Couldn't load your calendars");return}
+  let sel=new Set(S.gcal.cals||["primary"]);
+  editor("Calendars to show",`<p class="hint">Pick the calendars that should appear in Home and Week. Classroom calendars show assignment due dates.</p>
+    <div class="chips" id="gcList">${list.map(c=>{const id=c.id===list[0].id&&!c.id.includes("@group")?"primary":c.id;return `<button class="chip" type="button" data-id="${esc(id)}" aria-pressed="${sel.has(id)}">${esc((c.summary||c.id).replace(/\s*\|.*$/,""))}</button>`}).join("")}</div>
+    <div class="row"><button class="btn primary" id="gcSave">Save</button></div>`,close=>{
+    $("#gcList").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const id=b.dataset.id;sel.has(id)?sel.delete(id):sel.add(id);b.setAttribute("aria-pressed",sel.has(id))});
+    $("#gcSave").onclick=async()=>{if(!S.db)return;try{await S.db.doc("settings/gcal").set({cals:[...sel],updated:new Date().toISOString()});close();toast("Calendars saved")}catch(e){toast("Couldn't save. Try again")}}})}
+const BYDAY=["MO","TU","WE","TH","FR","SA","SU"];
+const gcErrNote=err=>err&&err.code==="needs_reauth"?". Reconnect Google Calendar to add it there":err&&err.code==="approval_required"?". Google Calendar wasn't allowed, so it's only saved here":". Couldn't add it to Google Calendar";
+function gcChip(x){if(x.gcalId)return `<p class="hint">Also in Google Calendar. Changing the date here doesn't move the Google copy.</p>`;
+  return MCP&&S.gcal.state!=="denied"?`<div class="chips"><button class="chip" type="button" id="x-gc" aria-pressed="false">Also add the date to Google Calendar</button></div>`:""}
+function wireGc(){let on=false;const b=$("#x-gc");if(b)b.onclick=()=>{on=!on;b.setAttribute("aria-pressed",on)};return()=>on}
+async function maybeGc(on,body,title,date,desc){if(!on||!date||!MCP||body.gcalId)return "";
+  try{const r=await MCP.callTool(GC,"create_event",{summary:title,allDay:true,startTime:date+"T00:00:00",endTime:addDays(date,1)+"T00:00:00",description:(desc?desc+". ":"")+"Added from Thinking Ledger"});
+    const p=r.payload||{};body.gcalId=p.id||(p.event&&p.event.id)||null;MCP.invalidate(GC,"list_events").catch(()=>{});return " and added to Google Calendar"}catch(err){return gcErrNote(err)}}
+async function gcalCreate(body){const start=body.start||"",end=body.end||"";let date=body.date;
+  if(body.repeat==="weekly"){let d=body.from&&body.from>todayStr()?body.from:todayStr();for(let i=0;i<7&&!body.days.includes(dow(d));i++)d=addDays(d,1);date=d}
+  const input={summary:body.title,location:body.location||undefined,description:"Added from Thinking Ledger"};
+  if(start){input.startTime=date+"T"+start+":00";input.endTime=date+"T"+(end&&end>start?end:start.replace(/^(\d\d)/,h=>pad(Math.min(23,+h+1))))+":00"}
+  else{input.allDay=true;input.startTime=date+"T00:00:00";input.endTime=addDays(date,1)+"T00:00:00"}
+  if(body.repeat==="weekly")input.recurrenceData=["RRULE:FREQ=WEEKLY;BYDAY="+body.days.map(n=>BYDAY[n-1]).join(",")+(body.until?";UNTIL="+body.until.replace(/-/g,"")+"T235959Z":"")];
+  Object.keys(input).forEach(k=>input[k]===undefined&&delete input[k]);
+  const r=await MCP.callTool(GC,"create_event",input);const p=r.payload||{};return p.id||(p.event&&p.event.id)||null}
+
+/* ---------- hobbies data ---------- */
+const activeHobbies=()=>S.hobbies.filter(h=>!h.archived);
+const hobbyName=id=>(S.hobbies.find(h=>h.id===id)||{}).name||"Hobby";
+const fmtMin=m=>m>=60?(Math.floor(m/60)+"h"+(m%60?" "+(m%60)+"m":"")):(m||0)+"m";
+function minutesIn(hid,a,b){return S.sessions.filter(s=>(!hid||s.hobbyId===hid)&&s.date>=a&&s.date<=b).reduce((t,s)=>t+(+s.minutes||0),0)}
+
+function sessRow(s,showHobby){return `<button class="sess" data-s="${esc(s.id)}"><span class="m">${showHobby?esc(hobbyName(s.hobbyId))+" · ":""}${esc(fmtDay(s.date))} · ${fmtMin(+s.minutes||0)}${s.enjoy?" · enjoyed "+s.enjoy+"/5":""}</span>
+  ${s.worked?`<span class="w">${esc(s.worked)}</span>`:""}</button>`}
+function wireSess(root){root.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>openSession(S.sessions.find(s=>s.id===b.dataset.s)))}
+
+function renderTodaySessions(){const box=$("#todaySessions");const xs=S.sessions.filter(s=>s.date===S.day);
+  if(!S.hobbies.length){box.innerHTML=`<p class="hint">Add your hobbies in the Hobbies tab, then log time here.</p>`;return}
+  box.innerHTML=xs.length?xs.map(s=>sessRow(s,true)).join(""):`<p class="hint">No hobby time logged ${S.day===todayStr()?"today":"this day"}.</p>`;wireSess(box)}
+$("#todayLog").onclick=()=>{if(!activeHobbies().length){show("hobbies");openHobby(null);return}openSession(null,{date:S.day})};
+
+function renderHobbies(){const box=$("#hobbyList");const hs=activeHobbies();const paused=S.hobbies.filter(h=>h.archived);
+  if(!hs.length){box.innerHTML=`<div class="empty"><b>No hobbies yet.</b> Add the ones you're actively working at, like drums or home coffee. For each, write what you're working toward and what you're focusing on right now.</div>`+pausedHtml(paused);wirePaused();return}
+  const t=todayStr(),mon=weekMonday(t);
+  box.innerHTML=hs.map(h=>{const wk=minutesIn(h.id,mon,t);const tg=+h.weekly||0;
+    const ss=S.sessions.filter(s=>s.hobbyId===h.id);const last=ss[0];const total=ss.reduce((a,s)=>a+(+s.minutes||0),0);
+    return `<div class="hobby"><div class="head"><button class="name" data-edit="${esc(h.id)}">${esc(h.name)}</button>
+      <span class="pill ${tg&&wk>=tg?"good":""}">${fmtMin(wk)}${tg?" / "+fmtMin(tg):""} this week</span></div>
+      <dl class="kv">${h.goal?`<dt>Goal</dt><dd>${esc(h.goal)}</dd>`:""}${h.focus?`<dt>Focus</dt><dd>${esc(h.focus)}</dd>`:""}
+      <dt>So far</dt><dd>${ss.length} session${ss.length===1?"":"s"} · ${fmtMin(total)}${last?" · last "+esc(fmtDay(last.date)):""}</dd></dl>
+      ${last&&last.next?`<div class="nextup"><b>Next time</b>${esc(last.next)}</div>`:""}
+      <div class="list">${ss.slice(0,3).map(s=>sessRow(s,false)).join("")}</div>
+      <div class="row"><button class="btn primary" data-log="${esc(h.id)}">Log a session</button>${ss.length>3?`<button class="btn ghost" data-all="${esc(h.id)}">All ${ss.length} sessions</button>`:""}</div></div>`}).join("")+pausedHtml(paused);
+  box.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openHobby(S.hobbies.find(h=>h.id===b.dataset.edit)));
+  box.querySelectorAll("[data-log]").forEach(b=>b.onclick=()=>openSession(null,{hobbyId:b.dataset.log,date:todayStr()}));
+  box.querySelectorAll("[data-all]").forEach(b=>b.onclick=()=>allSessions(b.dataset.all));
+  wireSess(box);wirePaused()}
+function pausedHtml(p){return p.length?`<div class="sheet"><h3>Paused</h3><div class="chips">${p.map(h=>`<button class="chip" data-pz="${esc(h.id)}">${esc(h.name)}</button>`).join("")}</div></div>`:""}
+function wirePaused(){$("#hobbyList").querySelectorAll("[data-pz]").forEach(b=>b.onclick=()=>openHobby(S.hobbies.find(h=>h.id===b.dataset.pz)))}
+function allSessions(hid){const ss=S.sessions.filter(s=>s.hobbyId===hid);
+  editor(hobbyName(hid)+" sessions",`<div class="list" id="allSess">${ss.map(s=>sessRow(s,false)).join("")}</div>`,close=>{
+    $("#allSess").querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{close();openSession(S.sessions.find(s=>s.id===b.dataset.s))})})}
+function renderHobbiesAll(){renderTodaySessions();renderHobbies();renderWeekStats()}
+$("#newHobby").onclick=()=>openHobby(null);
+
+/* ---------- TODAY ---------- */
+const eF=["focus","log","learned","question"];let energy=null;
+const energyBox=$("#e-energy");
+[1,2,3,4,5].forEach(n=>{const b=document.createElement("button");b.className="chip";b.textContent=n;b.type="button";
+  b.onclick=()=>{energy=energy===n?null:n;paintEnergy();dirty()};energyBox.appendChild(b)});
+function paintEnergy(){[...energyBox.children].forEach((b,i)=>b.setAttribute("aria-pressed",energy===i+1))}
+let eDirty=false;function dirty(){eDirty=true;$("#eStatus").textContent="Unsaved"}
+eF.forEach(k=>$("#e-"+k).addEventListener("input",dirty));
+function loadDay(){const e=S.entries[S.day]||{};eF.forEach(k=>$("#e-"+k).value=e[k]||"");energy=e.energy||null;paintEnergy();eDirty=false;
+  $("#dLabel").textContent=S.day===todayStr()?"Today · "+fmtDay(S.day):fmtDay(S.day);
+  $("#eStatus").textContent=e.log||e.focus||e.learned?"Saved":"No entry yet";
+  $("#dNext").disabled=S.day>=todayStr();renderTodaySessions()}
+$("#dPrev").onclick=()=>{S.day=addDays(S.day,-1);loadDay()};
+$("#dNext").onclick=()=>{if(S.day<todayStr()){S.day=addDays(S.day,1);loadDay()}};
+async function saveEntry(){if(!S.db)return;const now=new Date().toISOString();const body=clone(S.entries[S.day]);
+  if(!body.created)body.created=now;body.date=S.day;body.week=isoWeek(S.day);body.energy=energy;body.updated=now;
+  eF.forEach(k=>body[k]=$("#e-"+k).value.trim());
+  try{await S.db.doc("entries/"+S.day).set(body);eDirty=false;$("#eStatus").textContent="Saved";toast("Entry saved")}catch(e){toast(e.code==="quota_exceeded"?"Storage is full: delete old records":"Couldn't save. Try again")}}
+$("#eSave").onclick=saveEntry;
+$("#ePromote").onclick=()=>{const q=$("#e-question").value.trim();if(!q){toast("Write the question first");return}
+  openIdea(null,{title:q,kind:"question",status:"seed",confidence:50,origin:S.day})};
+
+function renderDue(){const t=todayStr();const due=S.decisions.filter(d=>d.status!=="reviewed"&&d.reviewOn&&d.reviewOn<=t);
+  const b=$("#dueBadge");b.hidden=!due.length;b.textContent=due.length;
+  $("#dueList").innerHTML=due.length?due.map(d=>`<button class="item" data-id="${esc(d.id)}"><div class="body"><div class="t">${esc(d.title)}</div>
+    <div class="m">decided ${esc(d.date)} · review was due ${esc(d.reviewOn)}</div></div><span class="pill due">Review</span></button>`).join("")
+    :`<p class="hint">Nothing due. Decisions show up here on their review date.</p>`;
+  $("#dueList").querySelectorAll(".item").forEach(x=>x.onclick=()=>openDecision(S.decisions.find(d=>d.id===x.dataset.id),true))}
+
+/* ---------- IDEAS ---------- */
+const ISTAT=[["active","Active"],["seed","Seed"],["developing","Developing"],["settled","Settled"],["dropped","Dropped"],["all","All"]];
+$("#ideaFilter").innerHTML=ISTAT.map(([k,l])=>`<button class="chip" data-k="${k}">${l}</button>`).join("");
+$("#ideaFilter").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{S.ideaFilter=c.dataset.k;renderIdeas()});
+$("#ideaSearch").addEventListener("input",e=>{S.ideaQ=e.target.value.toLowerCase();renderIdeas()});
+$("#newIdea").onclick=()=>openIdea(null,{});
+function renderIdeas(){$("#ideaFilter").querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.k===S.ideaFilter));
+  let xs=S.ideas.slice();
+  if(S.ideaFilter==="active")xs=xs.filter(i=>i.status==="seed"||i.status==="developing");
+  else if(S.ideaFilter!=="all")xs=xs.filter(i=>i.status===S.ideaFilter);
+  if(S.ideaQ)xs=xs.filter(i=>(i.title+" "+(i.body||"")+" "+(i.tags||[]).join(" ")).toLowerCase().includes(S.ideaQ));
+  const box=$("#ideaList");
+  if(!S.ideas.length){box.innerHTML=`<div class="empty"><b>No ideas yet.</b> Start with a claim you half-believe or a question from today's entry. Example shape: "Compactness is the right abstraction for finite-like behaviour", confidence 70%, with one view for and one against.</div>`;return}
+  if(!xs.length){box.innerHTML=`<p class="hint">Nothing matches this filter.</p>`;return}
+  box.innerHTML=xs.map(i=>{const n=(i.perspectives||[]).length;const h=(i.history||[]).length;
+    return `<button class="item" data-id="${esc(i.id)}"><span class="p">${i.kind==="question"?"?":Math.round(i.confidence??50)+"%"}</span><div class="body"><div class="t">${esc(i.title)}</div>
+    <div class="m">${esc(i.status)} · ${n} view${n===1?"":"s"}${h?` · revised ${h}×`:""}${(i.tags||[]).length?" · "+esc(i.tags.join(", ")):""}</div></div></button>`}).join("");
+  box.querySelectorAll(".item").forEach(x=>x.onclick=()=>openIdea(S.ideas.find(i=>i.id===x.dataset.id)))}
+
+/* ---------- editor shell ---------- */
+function editor(title,html,onMount){const root=$("#editorRoot");S.sheetRefresh=null;
+  root.innerHTML=`<div class="scrim"><div class="editor" role="dialog" aria-label="${esc(title)}"><div class="grab"></div><div class="bar"><h2>${esc(title)}</h2><button class="btn ghost" id="edClose">Close</button></div>${html}</div></div>`;
+  const close=()=>{root.innerHTML="";S.sheetRefresh=null};$("#edClose").onclick=close;root.querySelector(".scrim").onclick=e=>{if(e.target.classList.contains("scrim"))close()};
+  onMount(close);const first=root.querySelector("input,textarea");first&&first.focus()}
+function slider(id,val){return `<div class="slider"><input type="range" min="0" max="100" step="5" id="${id}" value="${val}"><output id="${id}-o">${val}%</output></div>`}
+function wireSlider(id){const s=$("#"+id);s.oninput=()=>$("#"+id+"-o").textContent=s.value+"%"}
+function delRow(close,ref,label){return async()=>{const box=$("#delBox");box.innerHTML=`<span>Delete this ${label} for good?</span><button class="btn danger" id="delYes">Delete</button><button class="btn ghost" id="delNo">Keep</button>`;
+  $("#delNo").onclick=()=>box.innerHTML="";$("#delYes").onclick=async()=>{try{await ref.delete();close();toast("Deleted")}catch(e){toast("Couldn't delete")}}}}
+
+/* ---------- hobby editor ---------- */
+function openHobby(h){const x=Object.assign({},h||{});
+  const html=`<label class="f">Hobby<input type="text" id="h-name" value="${esc(x.name||"")}" placeholder="e.g. Drums"></label>
+  <label class="f">What I'm working toward<small>A longer goal, like "Play a full song with a band" or "Dial in espresso at home".</small><input type="text" id="h-goal" value="${esc(x.goal||"")}"></label>
+  <label class="f">Current focus<small>The one skill or project you're on right now. Update it as you move on.</small><input type="text" id="h-focus" value="${esc(x.focus||"")}"></label>
+  <label class="f">Time I'd like to spend each week<small>Optional, in minutes. Leave blank for no target.</small><input type="number" id="h-weekly" min="0" step="15" value="${x.weekly||""}"></label>
+  <div class="row"><button class="btn primary" id="hSave">Save hobby</button>
+  ${h?`<button class="btn" id="hArch">${h.archived?"Resume":"Pause"}</button><button class="btn danger" id="hDel">Delete</button>`:""}</div>
+  <div class="confirm" id="delBox"></div>`;
+  editor(h?"Edit hobby":"New hobby",html,close=>{
+    const save=async extra=>{if(!S.db)return;const name=$("#h-name").value.trim();if(!name){toast("Name the hobby");return}
+      const now=new Date().toISOString();const body=Object.assign({name,goal:$("#h-goal").value.trim(),focus:$("#h-focus").value.trim(),
+        weekly:Math.max(0,+$("#h-weekly").value||0),archived:!!x.archived,created:x.created||now,updated:now},extra||{});
+      try{await (h?S.db.doc("hobbies/"+h.id):S.db.collection("hobbies").doc()).set(body);close();toast("Hobby saved")}catch(e){toast("Couldn't save. Try again")}};
+    $("#hSave").onclick=()=>save();
+    if(h){$("#hArch").onclick=()=>save({archived:!h.archived});$("#hDel").onclick=delRow(close,S.db.doc("hobbies/"+h.id),"hobby")}})}
+
+/* ---------- session editor ---------- */
+function openSession(s,seed){const hs=activeHobbies();const x=Object.assign({date:todayStr(),minutes:30,hobbyId:(hs[0]||{}).id},s||seed||{});
+  const prev=S.sessions.find(o=>o.hobbyId===x.hobbyId&&o.id!==x.id&&o.date<=x.date&&o.next);
+  const opts=(s&&!hs.find(h=>h.id===s.hobbyId))?hs.concat(S.hobbies.filter(h=>h.id===s.hobbyId)):hs;
+  const html=`<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Hobby</span>
+    <div class="chips" id="s-hobby">${opts.map(h=>`<button class="chip" type="button" data-id="${esc(h.id)}" aria-pressed="${h.id===x.hobbyId}">${esc(h.name)}</button>`).join("")}</div></div>
+  <div id="s-prev"></div>
+  <div class="row"><label class="f" style="flex:1 1 140px">Date<input type="date" id="s-date" value="${esc(x.date)}"></label>
+    <label class="f" style="flex:0 0 auto">Minutes<input type="number" id="s-min" min="0" step="5" value="${+x.minutes||0}"></label></div>
+  <div class="chips" id="s-quick">${[15,30,45,60,90].map(m=>`<button class="chip" type="button" data-m="${m}">${fmtMin(m)}</button>`).join("")}</div>
+  <label class="f">What I worked on<input type="text" id="s-worked" value="${esc(x.worked||"")}" placeholder="e.g. Paradiddles at 90 bpm, then the verse groove"></label>
+  <label class="f">What I noticed or learned<textarea id="s-noticed">${esc(x.noticed||"")}</textarea></label>
+  <label class="f">Next time, try<small>This shows up when you next open this hobby.</small><input type="text" id="s-next" value="${esc(x.next||"")}"></label>
+  <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">How much I enjoyed it</span>
+    <div class="chips" id="s-enjoy">${[1,2,3,4,5].map(n=>`<button class="chip" type="button" data-n="${n}" aria-pressed="${n===x.enjoy}">${n}</button>`).join("")}</div></div>
+  <div class="row"><button class="btn primary" id="sSave">Save session</button>${s?`<button class="btn danger" id="sDel">Delete</button>`:""}</div>
+  <div class="confirm" id="delBox"></div>`;
+  editor(s?"Edit session":"Log a session",html,close=>{let hid=x.hobbyId,enjoy=x.enjoy||null;
+    const paintPrev=()=>{const p=S.sessions.find(o=>o.hobbyId===hid&&o.id!==x.id&&o.next);$("#s-prev").innerHTML=p?`<div class="nextup"><b>Last time you planned</b>${esc(p.next)}</div>`:""};paintPrev();
+    $("#s-hobby").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{hid=c.dataset.id;$("#s-hobby").querySelectorAll(".chip").forEach(o=>o.setAttribute("aria-pressed",o.dataset.id===hid));paintPrev()});
+    $("#s-quick").querySelectorAll(".chip").forEach(c=>c.onclick=()=>$("#s-min").value=c.dataset.m);
+    $("#s-enjoy").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{enjoy=enjoy===+c.dataset.n?null:+c.dataset.n;$("#s-enjoy").querySelectorAll(".chip").forEach(o=>o.setAttribute("aria-pressed",+o.dataset.n===enjoy))});
+    if(s)$("#sDel").onclick=delRow(close,S.db.doc("sessions/"+s.id),"session");
+    $("#sSave").onclick=async()=>{if(!S.db)return;if(!hid){toast("Pick a hobby");return}
+      const now=new Date().toISOString();const date=$("#s-date").value||todayStr();
+      const body={hobbyId:hid,date,week:isoWeek(date),minutes:Math.max(0,Math.round(+$("#s-min").value||0)),worked:$("#s-worked").value.trim(),
+        noticed:$("#s-noticed").value.trim(),next:$("#s-next").value.trim(),enjoy:enjoy,created:x.created||now,updated:now};
+      try{await (s?S.db.doc("sessions/"+s.id):S.db.collection("sessions").doc()).set(body);close();toast("Session saved")}catch(e){toast(e.code==="quota_exceeded"?"Storage is full: delete old sessions":"Couldn't save. Try again")}}})}
+
+/* ---------- idea editor ---------- */
+function openIdea(idea,seed){const i=Object.assign({kind:"claim",status:"seed",confidence:60,perspectives:[],tags:[],history:[]},idea||seed);
+  let persp=(i.perspectives||[]).map(p=>Object.assign({},p));
+  const html=`
+  <label class="f">Claim or question<input type="text" id="i-title" value="${esc(i.title||"")}"></label>
+  <div class="row"><label class="f" style="flex:1">Kind<select id="i-kind">${["claim","question","observation","method"].map(k=>`<option ${k===i.kind?"selected":""}>${k}</option>`).join("")}</select></label>
+  <label class="f" style="flex:1">Status<select id="i-status">${["seed","developing","settled","dropped"].map(k=>`<option ${k===i.status?"selected":""}>${k}</option>`).join("")}</select></label></div>
+  <label class="f">Statement and reasoning<small>State it precisely, then why you hold it.</small><textarea id="i-body">${esc(i.body||"")}</textarea></label>
+  <label class="f">Confidence it's true<small>For questions, how close you are to an answer.</small>${slider("i-conf",i.confidence??60)}</label>
+  <div style="display:flex;flex-direction:column;gap:8px"><span style="font-weight:700;font-size:.93rem">Perspectives</span>
+    <small class="hint">Who argues what? Books, teachers, papers, friends, your own counter-argument.</small>
+    <div id="perspBox" style="display:flex;flex-direction:column;gap:8px"></div>
+    <button class="btn" id="addPersp" type="button" style="align-self:flex-start">Add a perspective</button></div>
+  <label class="f">What would change my mind<textarea id="i-flip">${esc(i.flip||"")}</textarea></label>
+  <label class="f">Why I revised it<small>Fill this in when you move the confidence; it goes into the history.</small><input type="text" id="i-why"></label>
+  <label class="f">Tags<small>Comma separated.</small><input type="text" id="i-tags" value="${esc((i.tags||[]).join(", "))}"></label>
+  ${(i.history||[]).length?`<div><h3>Revision history</h3><div class="hist">${i.history.slice().reverse().map(h=>`${esc(h.date)}  ${h.from}% → ${h.to}%  ${esc(h.note||"")}`).join("<br>")}</div></div>`:""}
+  <div class="row"><button class="btn primary" id="iSave">Save idea</button>${idea?`<button class="btn danger" id="iDel">Delete</button>`:""}</div>
+  <div class="confirm" id="delBox"></div>`;
+  editor(idea?"Edit idea":"New idea",html,close=>{wireSlider("i-conf");
+    const paint=()=>{$("#perspBox").innerHTML=persp.map((p,k)=>`<div class="persp"><div class="row"><input type="text" data-k="${k}" data-f="who" placeholder="Source (person, book, field)" value="${esc(p.who||"")}" style="flex:1 1 160px">
+      <select data-k="${k}" data-f="stance">${["for","against","nuance"].map(s=>`<option ${s===p.stance?"selected":""}>${s}</option>`).join("")}</select>
+      <button class="btn ghost" data-rm="${k}" type="button">Remove</button></div>
+      <textarea data-k="${k}" data-f="view" placeholder="Their argument in your own words" style="min-height:60px">${esc(p.view||"")}</textarea></div>`).join("");
+      $("#perspBox").querySelectorAll("[data-f]").forEach(el=>el.oninput=el.onchange=()=>persp[el.dataset.k][el.dataset.f]=el.value);
+      $("#perspBox").querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{persp.splice(+b.dataset.rm,1);paint()})};
+    paint();$("#addPersp").onclick=()=>{persp.push({who:"",stance:"for",view:""});paint()};
+    if(idea)$("#iDel").onclick=delRow(close,S.db.doc("ideas/"+idea.id),"idea");
+    $("#iSave").onclick=async()=>{if(!S.db)return;const title=$("#i-title").value.trim();if(!title){toast("Give it a title");return}
+      const now=new Date().toISOString();const conf=+$("#i-conf").value;const hist=(i.history||[]).map(h=>Object.assign({},h));
+      if(idea&&conf!==(idea.confidence??60))hist.push({date:todayStr(),from:idea.confidence??60,to:conf,note:$("#i-why").value.trim()});
+      const body={title,kind:$("#i-kind").value,status:$("#i-status").value,body:$("#i-body").value.trim(),confidence:conf,
+        perspectives:persp.filter(p=>(p.who||p.view||"").trim()),flip:$("#i-flip").value.trim(),
+        tags:$("#i-tags").value.split(",").map(s=>s.trim()).filter(Boolean),history:hist,
+        created:i.created||now,updated:now,origin:i.origin||null};
+      try{await (idea?S.db.doc("ideas/"+idea.id):S.db.collection("ideas").doc()).set(body);close();toast("Idea saved")}catch(e){toast("Couldn't save. Try again")}}})}
+
+/* ---------- DECISIONS ---------- */
+$("#newDec").onclick=()=>openDecision(null);
+function renderDecisions(){const rev=S.decisions.filter(d=>d.status==="reviewed"&&typeof d.wentWell==="boolean");
+  const brier=rev.length?rev.reduce((a,d)=>a+Math.pow((d.confidence??50)/100-(d.wentWell?1:0),2),0)/rev.length:null;
+  const open=S.decisions.filter(d=>d.status!=="reviewed").length;
+  $("#calib").innerHTML=`<div class="stat"><div class="n">${open}</div><div class="l">open</div></div>
+    <div class="stat"><div class="n">${rev.length}</div><div class="l">reviewed</div></div>
+    <div class="stat"><div class="n">${brier===null?"–":brier.toFixed(2)}</div><div class="l" title="Mean of (p − outcome)². 0 is perfect, 0.25 is always saying 50%.">Brier score</div></div>`;
+  const box=$("#decList");
+  if(!S.decisions.length){box.innerHTML=`<div class="empty"><b>No decisions logged.</b> Any choice you'd want to learn from counts: which elective to take, how to structure the Integration Bee, whether to switch study methods. Record your options, your reasons, and a probability it goes well.</div>`;return}
+  const t=todayStr();
+  box.innerHTML=S.decisions.map(d=>{let pill=`<span class="pill">open</span>`;
+    if(d.status==="reviewed")pill=`<span class="pill ${d.wentWell?"good":"bad"}">${d.wentWell?"went well":"went badly"}</span>`;
+    else if(d.reviewOn&&d.reviewOn<=t)pill=`<span class="pill due">review due</span>`;
+    return `<button class="item" data-id="${esc(d.id)}"><span class="p">${Math.round(d.confidence??50)}%</span><div class="body"><div class="t">${esc(d.title)}</div>
+    <div class="m">${esc(d.date)}${d.reviewOn?" · review "+esc(d.reviewOn):""}</div></div>${pill}</button>`}).join("");
+  box.querySelectorAll(".item").forEach(x=>x.onclick=()=>openDecision(S.decisions.find(d=>d.id===x.dataset.id)))}
+function openDecision(d,reviewMode){const x=Object.assign({date:todayStr(),reviewOn:addDays(todayStr(),30),confidence:65},d||{});
+  const reviewing=d&&(reviewMode||d.status==="reviewed"||(d.reviewOn&&d.reviewOn<=todayStr()));
+  const html=`
+  <label class="f">The decision<input type="text" id="d-title" value="${esc(x.title||"")}"></label>
+  <label class="f">Context<small>What's the situation and what do you know right now?</small><textarea id="d-context">${esc(x.context||"")}</textarea></label>
+  <label class="f">Options considered<textarea id="d-options">${esc(x.options||"")}</textarea></label>
+  <label class="f">What I chose<input type="text" id="d-chosen" value="${esc(x.chosen||"")}"></label>
+  <label class="f">Reasons<textarea id="d-reasons">${esc(x.reasons||"")}</textarea></label>
+  <label class="f">The strongest case against it<textarea id="d-against">${esc(x.against||"")}</textarea></label>
+  <label class="f">Probability this goes well${slider("d-conf",x.confidence)}</label>
+  <div class="row"><label class="f" style="flex:1 1 140px">Decided on<input type="date" id="d-date" value="${esc(x.date)}"></label>
+  <label class="f" style="flex:1 1 140px">Review on<input type="date" id="d-review" value="${esc(x.reviewOn||"")}"></label></div>
+  ${reviewing?`<div class="persp"><h3>Review</h3>
+    <label class="f">What actually happened<textarea id="d-outcome">${esc(x.outcome||"")}</textarea></label>
+    <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:700;font-size:.93rem">Did it go well?</span>
+      <div class="chips"><button class="chip" type="button" data-w="1" aria-pressed="${x.wentWell===true}">Yes</button><button class="chip" type="button" data-w="0" aria-pressed="${x.wentWell===false}">No</button></div></div>
+    <label class="f">Was the reasoning sound, apart from the outcome?<small>Good decisions can turn out badly, and bad ones can get lucky.</small><textarea id="d-lesson">${esc(x.lesson||"")}</textarea></label></div>`:""}
+  <div class="row"><button class="btn primary" id="dSave">${reviewing?"Save review":"Save decision"}</button>${d?`<button class="btn danger" id="dDel">Delete</button>`:""}</div>
+  <div class="confirm" id="delBox"></div>`;
+  editor(reviewing?"Review decision":(d?"Edit decision":"New decision"),html,close=>{wireSlider("d-conf");let ww=typeof x.wentWell==="boolean"?x.wentWell:null;
+    document.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{ww=b.dataset.w==="1";document.querySelectorAll("[data-w]").forEach(c=>c.setAttribute("aria-pressed",(c.dataset.w==="1")===ww))});
+    if(d)$("#dDel").onclick=delRow(close,S.db.doc("decisions/"+d.id),"decision");
+    $("#dSave").onclick=async()=>{if(!S.db)return;const title=$("#d-title").value.trim();if(!title){toast("Name the decision");return}
+      const now=new Date().toISOString();
+      const body={title,context:$("#d-context").value.trim(),options:$("#d-options").value.trim(),chosen:$("#d-chosen").value.trim(),
+        reasons:$("#d-reasons").value.trim(),against:$("#d-against").value.trim(),confidence:+$("#d-conf").value,
+        date:$("#d-date").value||todayStr(),reviewOn:$("#d-review").value||null,created:x.created||now,updated:now,status:x.status||"open"};
+      if(reviewing){body.outcome=($("#d-outcome").value||"").trim();body.lesson=($("#d-lesson").value||"").trim();
+        if(ww!==null){body.wentWell=ww;body.status="reviewed";body.reviewedOn=todayStr()}}
+      try{await (d?S.db.doc("decisions/"+d.id):S.db.collection("decisions").doc()).set(body);close();toast(reviewing?"Review saved":"Decision saved")}catch(e){toast("Couldn't save. Try again")}}})}
+
+/* ---------- REVIEW ---------- */
+const wF=["wins","stuck","pattern","next"];let wDirty=false;
+wF.forEach(k=>$("#w-"+k).addEventListener("input",()=>{wDirty=true;$("#wStatus").textContent="Unsaved"}));
+function loadWeek(force){const wk=isoWeek(S.weekStart);const r=S.reviews[wk]||{};
+  $("#wkTitle").textContent=wk+" · from "+fmtDay(S.weekStart);
+  if(force||!wDirty){wF.forEach(k=>$("#w-"+k).value=r[k]||"");wDirty=false;$("#wStatus").textContent=r.updated?"Saved":""}
+  $("#claudeWeek").innerHTML=r.claudeNotes?esc(r.claudeNotes):`<span class="hint">Written during the Sunday review session. Nothing here yet for this week.</span>`;
+  $("#wNext").disabled=S.weekStart>=weekMonday(todayStr());renderWeekStats()}
+function renderWeekStats(){const a=S.weekStart,b=addDays(a,6);
+  const days=Object.values(S.entries).filter(e=>e.date>=a&&e.date<=b&&(e.log||e.learned||e.focus));
+  const en=Object.values(S.entries).filter(e=>e.date>=a&&e.date<=b&&e.energy);const avg=en.length?(en.reduce((s,e)=>s+e.energy,0)/en.length).toFixed(1):"–";
+  const mins=minutesIn(null,a,b);
+  $("#wkStats").innerHTML=`<div class="stat"><div class="n">${days.length}/7</div><div class="l">days written</div></div>
+  <div class="stat"><div class="n">${mins?fmtMin(mins):"–"}</div><div class="l">hobby time</div></div>
+  <div class="stat"><div class="n">${avg}</div><div class="l">avg energy</div></div>`}
+$("#wPrev").onclick=()=>{S.weekStart=addDays(S.weekStart,-7);loadWeek(true)};
+$("#wNext").onclick=()=>{if(S.weekStart<weekMonday(todayStr())){S.weekStart=addDays(S.weekStart,7);loadWeek(true)}};
+$("#wSave").onclick=async()=>{if(!S.db)return;const wk=isoWeek(S.weekStart);
+  const body=clone(S.reviews[wk]);Object.assign(body,{week:wk,start:S.weekStart,updated:new Date().toISOString()});
+  wF.forEach(k=>body[k]=$("#w-"+k).value.trim());
+  try{await S.db.doc("reviews/"+wk).set(body);wDirty=false;$("#wStatus").textContent="Saved";toast("Review saved")}catch(e){toast("Couldn't save. Try again")}};
+function renderClaudeToday(){const r=S.reviews[isoWeek(todayStr())]||S.reviews[isoWeek(addDays(todayStr(),-7))];
+  const note=r&&r.claudeNotes;$("#claudeNoteBox").hidden=!note;if(note)$("#claudeNoteToday").textContent=note}
+
+/* ---------- boot ---------- */
+loadDay();renderHobbies();renderDue();renderIdeas();renderDecisions();loadWeek(true);renderPlanning();
+(async()=>{let db=null;try{db=await window.claude?.use?.("db")}catch(e){}
+  if(!db){$("#offline").hidden=false;document.querySelectorAll("#eSave,#ePromote,#newIdea,#newDec,#newHobby,#todayLog,#wSave,#newProject,#newCourse,#newAssess,#newEvent,form.qadd button").forEach(b=>b.disabled=true);return}
+  S.db=db;const err=()=>{};
+  try{MCP=await window.claude?.use?.("mcp")}catch(e){MCP=null}
+  S.gcal.state=MCP?"loading":"off";paintGcal();
+  const list=(name,q,key,after)=>q.onSnapshot(s=>{S[key]=s.docs.map(d=>Object.assign({id:d.id},d.data()));after()},err);
+  const both=()=>{gcalRebuild();renderPlanning()};
+  list("projects",db.collection("projects").orderBy("created","asc"),"projects",both);
+  list("tasks",db.collection("tasks").orderBy("created","asc").limit(1000),"tasks",both);
+  list("courses",db.collection("courses").orderBy("created","asc"),"courses",renderPlanning);
+  list("assessments",db.collection("assessments"),"assess",both);
+  list("events",db.collection("events"),"events",()=>{gcalRebuild();renderPlanning()});
+  db.doc("settings/gcal").onSnapshot(d=>{const v=d.exists?d.data():null;S.gcal.cals=v&&Array.isArray(v.cals)&&v.cals.length?v.cals.slice():["primary"];rewatch()},err);
+  db.collection("entries").onSnapshot(s=>{S.entries={};s.docs.forEach(d=>S.entries[d.id]=d.data());if(!eDirty)loadDay();renderWeekStats();renderHome()},err);
+  db.collection("hobbies").orderBy("created","asc").onSnapshot(s=>{S.hobbies=s.docs.map(d=>Object.assign({id:d.id},d.data()));renderHobbiesAll();renderHome()},err);
+  db.collection("sessions").orderBy("date","desc").limit(1000).onSnapshot(s=>{S.sessions=s.docs.map(d=>Object.assign({id:d.id},d.data()));renderHobbiesAll();renderHome()},err);
+  db.collection("ideas").orderBy("updated","desc").onSnapshot(s=>{S.ideas=s.docs.map(d=>Object.assign({id:d.id},d.data()));renderIdeas();renderHome()},err);
+  db.collection("decisions").orderBy("date","desc").onSnapshot(s=>{S.decisions=s.docs.map(d=>Object.assign({id:d.id},d.data()));renderDecisions();renderDue();renderHome()},err);
+  db.collection("reviews").onSnapshot(s=>{S.reviews={};s.docs.forEach(d=>S.reviews[d.id]=d.data());loadWeek(false);renderClaudeToday();renderHome()},err);
+})();
+})();
+</script>
+
+</body></html>
